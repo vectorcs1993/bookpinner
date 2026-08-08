@@ -1,0 +1,158 @@
+@import './quasar.variables.scss';
+
+// Глобальные темы и переиспользуемые классы
+.modern-library-theme {
+  background: linear-gradient(180deg, $bg-dark-start 0%, $bg-dark-end 100%) fixed !important;
+  color: $text-primary !important;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+// Кнопки
+.modern-btn {
+  background-color: $primary-orange !important;
+  color: $text-primary !important;
+  border-radius: $radius-sm !important;
+  border: none !important;
+  font-weight: 500;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: $primary-orange-light !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba($primary-orange, 0.3);
+  }
+}
+
+.modern-btn-outline {
+  background: transparent !important;
+  color: $primary-orange-light !important;
+  border: 1px solid $border-color !important;
+  border-radius: $radius-sm !important;
+  font-weight: 500;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: rgba($primary-orange, 0.08) !important;
+    border-color: $border-color-hover !important;
+  }
+}
+
+.modern-btn-sm {
+  background: transparent !important;
+  color: $primary-orange-light !important;
+  border-radius: $radius-sm !important;
+  font-weight: 500;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: rgba($primary-orange, 0.15) !important;
+  }
+}
+
+// Поля ввода
+.modern-input {
+  .q-field__control {
+    background: $bg-card !important;
+    border: 1px solid $border-color !important;
+    border-radius: $radius-md !important;
+    transition: all 0.3s ease !important;
+    color: $text-primary !important;
+
+    &:hover {
+      border-color: $border-color-hover !important;
+      background: $bg-card-hover !important;
+    }
+
+    &:focus-within {
+      border-color: $primary-orange !important;
+      box-shadow: 0 0 0 3px rgba($primary-orange, 0.1) !important;
+    }
+  }
+
+  .q-field__native {
+    color: $text-primary !important;
+  }
+
+  .q-field__label {
+    color: $text-muted !important;
+  }
+}
+
+// Фильтры и селекты
+.filter-select {
+  .q-field__control {
+    background: $bg-card !important;
+    border: 1px solid $border-color !important;
+    border-radius: $radius-md !important;
+    transition: all 0.3s ease !important;
+    color: $text-primary !important;
+
+    &:hover {
+      border-color: $border-color-hover !important;
+      background: $bg-card-hover !important;
+    }
+
+    &:focus-within {
+      border-color: $primary-orange !important;
+      box-shadow: 0 0 0 3px rgba($primary-orange, 0.1) !important;
+    }
+  }
+
+  .q-field__native {
+    color: $text-primary !important;
+  }
+
+  .q-field__label {
+    color: $text-muted !important;
+  }
+}
+
+// Чипсы
+.filter-chip {
+  background: rgba($primary-orange, 0.15) !important;
+  color: $text-primary !important;
+  border: 1px solid rgba($primary-orange, 0.2) !important;
+  border-radius: 20px !important;
+  font-size: 12px !important;
+  padding: 4px 14px !important;
+
+  .q-icon {
+    color: $primary-orange-light !important;
+  }
+}
+
+// Меню
+.dark-menu {
+  background: $bg-dark-end !important;
+  border: 1px solid $border-color !important;
+
+  .q-item {
+    color: $text-primary !important;
+
+    &:hover {
+      background: rgba($primary-orange, 0.2) !important;
+    }
+
+    &.q-manual-focusable--focused {
+      background: rgba($primary-orange, 0.3) !important;
+    }
+  }
+}
+
+// Карточки
+.antique-card {
+  background: linear-gradient(180deg, $bg-dark-start 0%, $bg-dark-end 100%) !important;
+  color: $text-primary !important;
+  border: 1px solid $border-color !important;
+  border-radius: $radius-lg !important;
+}
+
+.antique-img {
+  border: 2px solid rgba($primary-orange-dark, 0.4);
+  box-shadow: $shadow-card;
+  border-radius: $radius-sm;
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}

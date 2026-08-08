@@ -23,3 +23,58 @@ $positive: #21ba45;
 $negative: #c10015;
 $info: #31ccec;
 $warning: #f2c037;
+
+// Ваши кастомные переменные
+$primary-orange: #C45100;
+$primary-orange-light: #E05F0A;
+$primary-orange-dark: #8C3800;
+
+$bg-dark-start: #0B0A09;
+$bg-dark-end: #1F1510;
+$bg-card: rgba(31, 21, 16, 0.6);
+$bg-card-hover: rgba(31, 21, 16, 0.9);
+
+$text-primary: #FFFFFF;
+$text-secondary: rgba(255, 255, 255, 0.7);
+$text-muted: rgba(255, 255, 255, 0.5);
+
+$border-color: rgba(196, 81, 0, 0.15);
+$border-color-hover: rgba(196, 81, 0, 0.3);
+
+// Размеры
+$drawer-width: 280px;
+$book-max-width: 180px;
+$book-gap: 20px;
+
+// Тени
+$shadow-book: -4px 6px 20px rgba(0, 0, 0, 0.7);
+$shadow-card: 0 4px 20px rgba(0, 0, 0, 0.8);
+$shadow-glow: 0 8px 40px rgba(0, 0, 0, 0.6);
+
+// Радиусы
+$radius-sm: 8px;
+$radius-md: 10px;
+$radius-lg: 12px;
+
+// Анимации
+@keyframes bookAppear {
+  0% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

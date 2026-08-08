@@ -1,1 +1,120 @@
-// app global css in SCSS form
+// Глобальные стили приложения
+@import './quasar.variables.scss';
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: linear-gradient(180deg, $bg-dark-start 0%, $bg-dark-end 100%) fixed !important;
+  color: $text-primary !important;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  min-height: 100vh;
+}
+
+// Scrollbar стилизация
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: $bg-dark-start;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $primary-orange;
+  border-radius: 3px;
+
+  &:hover {
+    background: $primary-orange-light;
+  }
+}
+
+// Общие утилиты
+.text-gradient {
+  background: linear-gradient(135deg, $primary-orange, $primary-orange-light);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.bg-gradient-primary {
+  background: linear-gradient(135deg, $primary-orange, $primary-orange-light);
+}
+
+.bg-dark-card {
+  background: $bg-card !important;
+}
+
+.bg-dark-card-hover {
+  background: $bg-card-hover !important;
+}
+
+.border-orange {
+  border-color: $border-color !important;
+}
+
+.border-orange-hover {
+  &:hover {
+    border-color: $border-color-hover !important;
+  }
+}
+
+// Quasar оверрайды
+.q-drawer {
+  background: linear-gradient(180deg, $bg-dark-start 0%, $bg-dark-end 100%) !important;
+}
+
+.q-drawer__content {
+  background: transparent !important;
+}
+
+.q-field--dark .q-field__control {
+  background: $bg-card !important;
+  color: $text-primary !important;
+}
+
+.q-field--dark .q-field__native {
+  color: $text-primary !important;
+}
+
+.q-field--dark .q-field__label {
+  color: $text-muted !important;
+}
+
+.q-menu {
+  background: $bg-dark-end !important;
+  border: 1px solid $border-color !important;
+}
+
+.q-menu .q-item {
+  color: $text-primary !important;
+}
+
+.q-menu .q-item:hover {
+  background: rgba($primary-orange, 0.2) !important;
+}
+
+.q-menu .q-item.q-manual-focusable--focused {
+  background: rgba($primary-orange, 0.3) !important;
+}
+
+// Responsive helpers
+@mixin respond-to($breakpoint) {
+  @if $breakpoint == 'sm' {
+    @media (max-width: 576px) { @content; }
+  }
+  @if $breakpoint == 'md' {
+    @media (max-width: 768px) { @content; }
+  }
+  @if $breakpoint == 'lg' {
+    @media (max-width: 992px) { @content; }
+  }
+  @if $breakpoint == 'xl' {
+    @media (max-width: 1200px) { @content; }
+  }
+  @if $breakpoint == 'xxl' {
+    @media (max-width: 1440px) { @content; }
+  }
+}
