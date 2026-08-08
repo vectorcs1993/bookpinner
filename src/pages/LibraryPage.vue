@@ -127,7 +127,7 @@ const newBook = reactive({
   coverUrl: '',
 })
 
-const emit = defineEmits(['toggleDrawer'])
+defineEmits(['toggleDrawer'])
 
 const authorOptions = computed(() => {
   const authors = new Set(booksStore.getBooks.map(book => book.author))

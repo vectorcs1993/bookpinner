@@ -98,13 +98,13 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { computed } from 'vue'
 import { useBooksStore } from 'src/stores/books-store'
 import { UButton } from 'src/components/ui'
 
 const booksStore = useBooksStore()
 
-const emit = defineEmits(['toggleDrawer'])
+defineEmits(['toggleDrawer'])
 
 const defaultCover = 'https://via.placeholder.com/60x84/8C3800/FFFFFF?text=Нет+обложки'
 

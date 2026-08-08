@@ -1,6 +1,6 @@
 <template>
   <div class="u-spinner-wrapper" :class="{ 'u-spinner-overlay': overlay }">
-    <q-spinner :color="color" :size="size" v-bind="$attrs" />
+    <q-spinner :color="props.color" :size="size" v-bind="$attrs" />
     <span v-if="text" class="u-spinner-text">{{ text }}</span>
   </div>
 </template>

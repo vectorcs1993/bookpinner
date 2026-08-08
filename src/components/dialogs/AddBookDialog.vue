@@ -1,9 +1,9 @@
 <template>
   <UDialog v-model="dialogVisible" title="📖 Добавить книгу">
     <div class="add-book-form">
-      <q-input v-model="form.title" label="Название *" outlined dense class="q-mb-md" />
-      <q-input v-model="form.author" label="Автор *" outlined dense class="q-mb-md" />
-      <q-input v-model="form.coverUrl" label="URL обложки" outlined dense class="q-mb-md" placeholder="https://example.com/cover.jpg" />
+      <UInput v-model="form.title" label="Название *" dense class="q-mb-md" />
+      <UInput v-model="form.author" label="Автор *" dense class="q-mb-md" />
+      <UInput v-model="form.coverUrl" label="URL обложки" dense class="q-mb-md" placeholder="https://example.com/cover.jpg" />
 
       <div v-if="form.coverUrl" class="cover-preview">
         <q-img :src="form.coverUrl" :ratio="5 / 7" fit="cover" style="max-width: 120px; border-radius: 8px;" />

@@ -146,7 +146,7 @@ const $q = useQuasar()
 const shelvesStore = useShelvesStore()
 const booksStore = useBooksStore()
 
-const emit = defineEmits(['toggleDrawer'])
+defineEmits(['toggleDrawer'])
 
 const newShelfName = ref('')
 const shelfDialogVisible = ref(false)
