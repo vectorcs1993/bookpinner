@@ -22,7 +22,7 @@ body.body--light {
   color: $text-primary-light !important;
 }
 
-// Стили для кастомных компонентов с использованием переменных
+// Стили для кастомных компонентов
 .drawer-header {
   padding: 24px 20px 20px;
   display: flex;
@@ -33,15 +33,6 @@ body.body--light {
 
 body.body--light .drawer-header {
   border-bottom-color: $border-color-light;
-}
-
-.drawer-footer {
-  padding: 20px;
-  border-top: 1px solid $border-color;
-}
-
-body.body--light .drawer-footer {
-  border-top-color: $border-color-light;
 }
 
 .drawer-logo {
@@ -77,49 +68,26 @@ body.body--light .logo-subtitle {
   color: $text-muted-light;
 }
 
-.footer-stat {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 14px;
-  padding: 6px 0;
-  color: $text-secondary;
-}
-
-body.body--light .footer-stat {
-  color: $text-secondary-light;
-}
-
-.filters-panel {
-  padding: 16px;
-  border-radius: 8px;
-  background: $bg-card;
-}
-
-body.body--light .filters-panel {
-  background: $bg-card-light;
-}
-
 .note-item {
   display: flex;
   align-items: center;
   padding: 10px 14px;
   margin-bottom: 8px;
-  border-left: 4px solid $primary-orange;
-  border-radius: 0 8px 8px 0;
-  background: rgba($primary-orange, 0.05);
+  border-left: 4px solid $primary;
+  border-radius: 0 $radius-sm $radius-sm 0;
+  background: rgba($primary, 0.05);
   transition: background 0.2s;
 
   &:hover {
-    background: rgba($primary-orange, 0.1);
+    background: rgba($primary, 0.1);
   }
 }
 
 body.body--light .note-item {
-  background: rgba($primary-orange, 0.03);
+  background: rgba($primary, 0.03);
   
   &:hover {
-    background: rgba($primary-orange, 0.08);
+    background: rgba($primary, 0.08);
   }
 }
 
@@ -132,10 +100,6 @@ body.body--light .note-item {
 
 body.body--light .page-title {
   color: $text-primary-light;
-}
-
-.library-page {
-  min-height: 100vh;
 }
 
 // Scrollbar
@@ -153,22 +117,10 @@ body.body--light ::-webkit-scrollbar-track {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: $primary-orange;
+  background: $primary;
   border-radius: 3px;
 
   &:hover {
-    background: $primary-orange-light;
-  }
-}
-
-// Анимации
-@keyframes bookAppear {
-  0% {
-    opacity: 0;
-    transform: translateY(30px) scale(0.9);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
+    background: $secondary;
   }
 }

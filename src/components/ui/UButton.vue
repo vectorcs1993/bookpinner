@@ -1,7 +1,8 @@
 <template>
-  <q-btn :label="label" :icon="icon" :loading="loading" :disabled="disabled" :color="color" :flat="variant === 'flat' || variant === 'ghost'"
-    :outline="variant === 'outline'" :dense="size === 'sm'" :size="size === 'sm' ? 'sm' : size === 'lg' ? 'lg' : 'md'"
-    :class="['u-btn', { 'u-btn-full': fullWidth }]" v-bind="$attrs" @click="handleClick">
+  <q-btn :label="label" :icon="icon" :loading="loading" :disabled="disabled" :color="color || 'primary'"
+    :flat="variant === 'flat' || variant === 'ghost'" :outline="variant === 'outline'" :dense="size === 'sm'"
+    :size="size === 'sm' ? 'sm' : size === 'lg' ? 'lg' : 'md'" :rounded="rounded" :square="square" :class="['u-btn', { 'u-btn-full': fullWidth }]"
+    v-bind="$attrs" @click="handleClick">
     <template v-if="$slots.prepend" #prepend>
       <slot name="prepend" />
     </template>
@@ -26,7 +27,9 @@ const props = defineProps({
     default: 'md',
     validator: (v) => ['sm', 'md', 'lg'].includes(v),
   },
-  color: { type: String, default: '' },
+  rounded: { type: Boolean, default: true }, // По умолчанию скругленные
+  square: { type: Boolean, default: false },
+  color: { type: String, default: 'primary' },
   loading: { type: Boolean, default: false },
   disabled: { type: Boolean, default: false },
   fullWidth: { type: Boolean, default: false },

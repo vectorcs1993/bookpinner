@@ -4,11 +4,11 @@
     <q-card class="u-dialog-card">
       <q-card-section v-if="title || $slots.title" class="u-dialog-header">
         <div class="row items-center">
-          <div class="text-h6" style="font-weight: 300;">
+          <div class="text-h5" style="font-weight: 300;">
             <slot name="title">{{ title }}</slot>
           </div>
           <q-space />
-          <UButton v-if="!persistent" icon="close" variant="ghost" size="sm" @click="close" />
+          <UButton v-if="!persistent" icon="close" variant="ghost" shape="round" size="sm" @click="close" />
         </div>
       </q-card-section>
 
@@ -20,7 +20,7 @@
 
       <q-card-actions v-if="$slots.actions || actions" align="right" class="u-dialog-actions">
         <slot name="actions">
-          <UButton v-for="action in actions" :key="action.label" :label="action.label" :variant="action.variant || 'secondary'"
+          <UButton v-for="action in actions" :key="action.label" :label="action.label" :variant="action.variant || 'secondary'" shape="round"
             :loading="action.loading" @click="action.handler" />
         </slot>
       </q-card-actions>
@@ -73,35 +73,57 @@ const close = () => {
 </script>
 
 <style scoped lang="scss">
+@import 'src/css/quasar.variables.scss';
+
 .u-dialog {
   :deep(.q-dialog__inner) {
-    min-width: 400px;
+    min-width: 500px;
+    max-width: 90vw;
 
     @media (max-width: 768px) {
-      min-width: 320px;
+      min-width: 90vw;
+      max-width: 95vw;
     }
 
     @media (max-width: 480px) {
-      min-width: 280px;
+      min-width: 95vw;
+      max-width: 98vw;
     }
   }
 }
 
 .u-dialog-card {
-  border-radius: 12px !important;
+  border-radius: $radius-lg !important;
+  min-height: 200px;
+  max-height: 85vh;
 }
 
 .u-dialog-header {
-  padding: 16px 20px !important;
+  padding: 20px 24px !important;
+
+  .text-h5 {
+    font-size: 22px;
+    font-weight: 600;
+  }
 }
 
 .u-dialog-body {
-  padding: 16px 20px !important;
+  padding: 20px 24px !important;
+  max-height: 60vh;
+  overflow-y: auto;
 }
 
 .u-dialog-actions {
-  padding: 12px 20px !important;
-  gap: 8px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 16px 24px !important;
+  gap: 12px;
+  border-top: 1px solid $border-color;
+
+  :deep(.u-btn) {
+    min-width: 120px;
+  }
+}
+
+body.body--light .u-dialog-actions {
+  border-top-color: $border-color-light;
 }
 </style>

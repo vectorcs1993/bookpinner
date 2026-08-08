@@ -1,7 +1,8 @@
 <template>
   <q-input v-model="localValue" :label="label" :placeholder="placeholder" :type="type" :dense="dense" :outlined="variant === 'outlined'"
-    :filled="variant === 'filled'" :standout="variant === 'standout'" :dark="dark" :clearable="clearable" :loading="loading" :disable="disabled"
-    :error="error" :error-message="errorMessage" v-bind="$attrs" @update:model-value="handleUpdate" @focus="handleFocus" @blur="handleBlur">
+    :filled="variant === 'filled'" :standout="variant === 'standout'" :rounded="rounded" :clearable="clearable" :loading="loading" :disable="disabled"
+    :error="error" :error-message="errorMessage" v-bind="$attrs" @update:model-value="handleUpdate" @focus="handleFocus" @blur="handleBlur"
+    color="primary">
     <template v-if="$slots.prepend" #prepend>
       <slot name="prepend" />
     </template>
@@ -19,7 +20,7 @@ import { ref, watch } from 'vue'
 
 const props = defineProps({
   modelValue: { type: [String, Number], default: '' },
-  label: { type: String, default: '' },
+  label: { type: String, default: undefined },
   placeholder: { type: String, default: '' },
   type: { type: String, default: 'text' },
   variant: {
@@ -27,8 +28,8 @@ const props = defineProps({
     default: 'outlined',
     validator: (v) => ['outlined', 'filled', 'standout'].includes(v),
   },
+  rounded: { type: Boolean, default: true },
   dense: { type: Boolean, default: false },
-  dark: { type: Boolean, default: true },
   clearable: { type: Boolean, default: false },
   loading: { type: Boolean, default: false },
   disabled: { type: Boolean, default: false },

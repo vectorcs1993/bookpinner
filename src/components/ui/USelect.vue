@@ -2,7 +2,7 @@
   <q-select v-model="localValue" :options="options" :label="label" :placeholder="placeholder" :dense="dense" :outlined="variant === 'outlined'"
     :filled="variant === 'filled'" :dark="dark" :clearable="clearable" :disable="disabled" :loading="loading" :error="error"
     :error-message="errorMessage" :multiple="multiple" :use-chips="multiple" :popup-content-class="'u-select-popup'" v-bind="$attrs"
-    @update:model-value="handleUpdate">
+    @update:model-value="handleUpdate" color="primary">
     <template v-if="$slots.prepend" #prepend>
       <slot name="prepend" />
     </template>
@@ -19,7 +19,7 @@
             </q-item-label>
           </q-item-section>
           <q-item-section v-if="scope.opt.icon" side>
-            <q-icon :name="scope.opt.icon" color="orange" />
+            <q-icon :name="scope.opt.icon" color="primary" />
           </q-item-section>
         </q-item>
       </slot>

@@ -1,11 +1,18 @@
 <template>
   <UDialog v-model="dialogVisible" title="📖 Добавить книгу">
-    <UInput v-model="form.title" label="Название *" class="q-mb-sm" />
-    <UInput v-model="form.author" label="Автор *" class="q-mb-sm" />
-    <UInput v-model="form.coverUrl" label="URL обложки" />
+    <div class="add-book-form">
+      <q-input v-model="form.title" label="Название *" outlined dense class="q-mb-md" />
+      <q-input v-model="form.author" label="Автор *" outlined dense class="q-mb-md" />
+      <q-input v-model="form.coverUrl" label="URL обложки" outlined dense class="q-mb-md" placeholder="https://example.com/cover.jpg" />
+
+      <div v-if="form.coverUrl" class="cover-preview">
+        <q-img :src="form.coverUrl" :ratio="5 / 7" fit="cover" style="max-width: 120px; border-radius: 8px;" />
+      </div>
+    </div>
+
     <template #actions>
-      <UButton label="Отмена" variant="ghost" @click="dialogVisible = false" />
-      <UButton label="Добавить книгу" variant="primary" :disabled="!form.title || !form.author" @click="submit" />
+      <UButton label="Отмена" icon="close" variant="ghost" shape="round" @click="dialogVisible = false" />
+      <UButton label="Добавить книгу" icon="add" variant="primary" shape="round" :disabled="!form.title || !form.author" @click="submit" />
     </template>
   </UDialog>
 </template>
@@ -43,3 +50,22 @@ const submit = () => {
   dialogVisible.value = false
 }
 </script>
+
+<style scoped lang="scss">
+.add-book-form {
+  min-width: 480px;
+  padding: 8px 0;
+
+  .cover-preview {
+    margin-top: 12px;
+    display: flex;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .add-book-form {
+    min-width: unset;
+  }
+}
+</style>

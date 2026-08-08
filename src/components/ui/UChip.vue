@@ -1,9 +1,11 @@
 <template>
-  <q-chip :label="label" :icon="icon" :color="color" :text-color="textColor" :size="size" :dense="dense" :removable="removable" :clickable="clickable"
-    :disable="disable" :class="['u-chip', chipClass]" @update:model-value="handleRemove" @click="handleClick" v-bind="$attrs">
+  <q-chip :label="label" :icon="icon" :color="color || 'primary'" :text-color="textColor || 'white'" :size="size" :dense="dense"
+    :removable="removable" :clickable="clickable" :disable="disable" :class="['u-chip', chipClass]" @update:model-value="handleRemove"
+    @click="handleClick" v-bind="$attrs">
     <template v-if="$slots.default" #default>
       <slot />
     </template>
+    <!-- Добавляем поддержку append слота -->
     <template v-if="$slots.append" #append>
       <slot name="append" />
     </template>
@@ -14,8 +16,8 @@
 const props = defineProps({
   label: { type: String, default: '' },
   icon: { type: String, default: '' },
-  color: { type: String, default: '' },
-  textColor: { type: String, default: '' },
+  color: { type: String, default: 'primary' },
+  textColor: { type: String, default: 'white' },
   variant: {
     type: String,
     default: 'default',

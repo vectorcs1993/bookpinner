@@ -148,8 +148,6 @@ export const useBooksStore = defineStore('books', {
       this.setLoading(true)
       try {
         // Здесь будет запрос к API
-        // const response = await api.get('/books')
-        // this.books = response.data
       } catch (error) {
         console.error('Ошибка загрузки книг:', error)
       } finally {

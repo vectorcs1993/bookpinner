@@ -1,6 +1,5 @@
 <template>
   <q-drawer v-model="drawerOpen" side="left" bordered overlay :width="280" :breakpoint="500" :show-if-above="false" @click-outside="closeDrawer">
-    <!-- Шапка меню -->
     <div class="drawer-header">
       <div class="drawer-logo">
         <div class="logo-text">
@@ -11,11 +10,10 @@
       <q-btn flat round dense icon="close" @click="closeDrawer" />
     </div>
 
-    <!-- Навигация -->
     <q-list>
       <q-item v-for="item in menuItems" :key="item.route" clickable v-ripple :active="isActiveRoute(item.route)" @click="navigate(item.route)">
         <q-item-section avatar>
-          <q-icon :name="item.icon" color="orange" />
+          <q-icon :name="item.icon" color="primary" />
         </q-item-section>
         <q-item-section>{{ item.label }}</q-item-section>
       </q-item>
@@ -24,13 +22,13 @@
 
       <q-item clickable v-ripple @click="toggleTheme">
         <q-item-section avatar>
-          <q-icon :name="themeIcon" color="orange" />
+          <q-icon :name="themeIcon" color="primary" />
         </q-item-section>
         <q-item-section>
           <q-item-label>{{ themeLabel }}</q-item-label>
         </q-item-section>
         <q-item-section side>
-          <q-toggle :model-value="isDark" color="orange" @update:model-value="toggleTheme" />
+          <q-toggle :model-value="isDark" color="primary" @update:model-value="toggleTheme" />
         </q-item-section>
       </q-item>
     </q-list>
@@ -67,7 +65,7 @@ const themeIcon = computed(() => themeStore.themeIcon)
 const themeLabel = computed(() => themeStore.themeLabel)
 
 const menuItems = [
-  { label: 'Моя библиотека', icon: 'menu_book', route: '/' },
+  { label: 'Моя библиотека', icon: 'menu_book', route: '/library' },
   { label: 'Мои книжные полки', icon: 'shelves', route: '/shelves' },
   { label: 'Мой книжный трекер', icon: 'trending_up', route: '/tracker' },
 ]
@@ -91,34 +89,12 @@ const toggleTheme = () => {
 </script>
 
 <style scoped lang="scss">
+@import 'src/css/quasar.variables.scss';
+
 .drawer-header {
   padding: 24px 20px 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-}
-
-.drawer-logo {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.logo-text {
-  display: flex;
-  flex-direction: column;
-}
-
-.logo-title {
-  font-size: 20px;
-  font-weight: 600;
-  letter-spacing: -0.5px;
-}
-
-.logo-subtitle {
-  font-size: 12px;
-  font-weight: 300;
-  letter-spacing: 0.5px;
-  opacity: 0.5;
 }
 </style>

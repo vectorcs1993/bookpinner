@@ -1,13 +1,13 @@
 <template>
   <div class="bookshelf-wrapper">
     <div v-if="loading" class="text-center q-py-lg">
-      <q-spinner color="orange" size="3em" />
+      <q-spinner color="primary" size="3em" />
       <div class="q-mt-sm">Загрузка каталога...</div>
     </div>
 
     <div v-else class="shelves-container">
       <div v-if="books.length === 0" class="text-center q-py-lg">
-        <q-icon name="search_off" size="80px" color="orange" />
+        <q-icon name="search_off" size="80px" color="primary" />
         <div class="text-h6 q-mt-md">Книги не найдены</div>
         <div class="text-subtitle1" style="opacity: 0.5">
           Попробуйте изменить параметры поиска
@@ -20,7 +20,6 @@
             <BookCard v-for="book in shelf" :key="book.id" :book="book" @click="openPreview" />
           </div>
         </div>
-        <!-- Полка-разделитель между рядами -->
         <div v-if="shelfIndex < shelves.length - 1" class="shelf-divider"></div>
       </div>
     </div>
@@ -117,9 +116,9 @@ onBeforeUnmount(() => {
   max-width: 1600px;
   margin: 0 auto;
   background: rgba($bg-dark-start, 0.3);
-  border-left: 8px solid rgba($primary-orange, 0.125);
-  border-right: 8px solid rgba($primary-orange, 0.125);
-  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6), inset 0 0 60px rgba($primary-orange, 0.03);
+  border-left: 8px solid rgba($primary, 0.125);
+  border-right: 8px solid rgba($primary, 0.125);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6), inset 0 0 60px rgba($primary, 0.03);
   overflow: hidden;
 }
 
@@ -130,11 +129,11 @@ onBeforeUnmount(() => {
   position: relative;
 
   &:first-child {
-    border-top: 8px solid rgba($primary-orange, 0.125);
+    border-top: 8px solid rgba($primary, 0.125);
   }
 
   &:last-child {
-    border-bottom: 8px solid rgba($primary-orange, 0.125);
+    border-bottom: 8px solid rgba($primary, 0.125);
   }
 }
 
@@ -155,27 +154,26 @@ onBeforeUnmount(() => {
 .shelf-divider {
   height: 8px;
   position: relative;
-  background: rgba($primary-orange, 0.125);
+  background: rgba($primary, 0.125);
 }
 
-// Стили для светлой темы
 body.body--light {
   .shelves-container {
     background: rgba($bg-light-start, 0.3);
-    border-left-color: rgba($primary-orange, 0.1);
-    border-right-color: rgba($primary-orange, 0.1);
-    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.1), inset 0 0 60px rgba($primary-orange, 0.02);
+    border-left-color: rgba($primary, 0.1);
+    border-right-color: rgba($primary, 0.1);
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.1), inset 0 0 60px rgba($primary, 0.02);
   }
 
   .shelf-row {
     background: rgba($bg-light-end, 0.15);
 
     &:first-child {
-      border-top-color: rgba($primary-orange, 0.1);
+      border-top-color: rgba($primary, 0.1);
     }
 
     &:last-child {
-      border-bottom-color: rgba($primary-orange, 0.1);
+      border-bottom-color: rgba($primary, 0.1);
     }
   }
 
@@ -184,7 +182,7 @@ body.body--light {
   }
 
   .shelf-divider {
-    background: rgba($primary-orange, 0.1);
+    background: rgba($primary, 0.1);
   }
 }
 

@@ -16,7 +16,7 @@
     <q-tooltip v-if="book.notes.length > 0" anchor="top middle" self="bottom middle" :offset="[0, 10]">
       <div class="text-weight-medium q-mb-sm">📝 Заметки ({{ book.notes.length }})</div>
       <div v-for="(note, idx) in book.notes" :key="idx" class="note-tooltip-item">
-        <q-icon name="bookmark" color="orange" size="12px" class="q-mr-xs" />
+        <q-icon name="bookmark" :color="$q.dark.isActive ? 'orange' : 'primary'" size="12px" class="q-mr-xs" />
         {{ note }}
       </div>
     </q-tooltip>
@@ -24,6 +24,8 @@
 </template>
 
 <script setup>
+import { useQuasar } from 'quasar'
+
 const props = defineProps({
   book: {
     type: Object,
@@ -32,6 +34,7 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['click'])
+const $q = useQuasar()
 
 const handleClick = () => {
   emit('click', props.book)
@@ -79,10 +82,10 @@ const handleClick = () => {
   transform: rotateY(-1deg);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   overflow: hidden;
-  background-color: #2a1c14;
+  background-color: $accent;
 
   &:not([style*="url"]) {
-    background: linear-gradient(135deg, #2a1c14 0%, #1a100a 100%);
+    background: linear-gradient(135deg, $accent 0%, #1a100a 100%);
   }
 
   .book-wrapper:hover & {
@@ -146,7 +149,7 @@ const handleClick = () => {
   align-items: center;
   gap: 4px;
   backdrop-filter: blur(4px);
-  border: 1px solid rgba(196, 81, 0, 0.2);
+  border: 1px solid rgba($primary, 0.2);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
 }
 
@@ -165,7 +168,7 @@ const handleClick = () => {
   }
 }
 
-// Светлая тема для BookCard
+// Светлая тема
 body.body--light {
   .book {
     background-color: #f0e8e0;
@@ -177,22 +180,22 @@ body.body--light {
   }
 
   .book-title {
-    color: #1A1410;
+    color: $text-primary-light;
   }
 
   .book-author {
-    color: rgba(26, 20, 16, 0.7);
+    color: $text-secondary-light;
   }
 
   .book-notes-badge {
     background: rgba(255, 255, 255, 0.9);
-    color: #1A1410;
-    border: 1px solid rgba(196, 81, 0, 0.2);
+    color: $text-primary-light;
+    border: 1px solid rgba($primary, 0.2);
   }
 
   .note-tooltip-item {
-    color: rgba(26, 20, 16, 0.7);
-    border-bottom-color: rgba(26, 20, 16, 0.1);
+    color: $text-secondary-light;
+    border-bottom-color: rgba($text-primary-light, 0.1);
   }
 }
 
@@ -289,18 +292,6 @@ body.body--light {
     padding: 2px 6px;
     top: 8px;
     right: 8px;
-  }
-}
-
-@keyframes bookAppear {
-  0% {
-    opacity: 0;
-    transform: translateY(30px) scale(0.9);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
   }
 }
 </style>
