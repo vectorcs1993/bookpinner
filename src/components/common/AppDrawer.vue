@@ -1,12 +1,12 @@
 <template>
-  <q-drawer v-model="drawerOpen" side="left" bordered class="modern-drawer" :width="280" :breakpoint="500" :show-if-above="true">
+  <q-drawer v-model="drawerOpen" side="left" bordered overlay dark class="modern-drawer" :width="280" :breakpoint="500" :show-if-above="true"
+    :behavior="'desktop'">
     <!-- Шапка меню -->
     <div class="drawer-header">
       <div class="drawer-logo">
-        <div class="logo-icon">📚</div>
         <div class="logo-text">
-          <div class="logo-title">Библиотека</div>
-          <div class="logo-subtitle">Личная коллекция</div>
+          <div class="logo-title">BookPinner</div>
+          <div class="logo-subtitle">Pin your books. Track your progress!</div>
         </div>
       </div>
       <q-btn flat round dense icon="close" color="white" @click="closeDrawer" class="close-btn" />
@@ -25,7 +25,7 @@
       </q-list>
     </div>
 
-    <q-separator class="drawer-separator" />
+    <q-separator class="drawer-separator" dark />
 
     <!-- Нижняя часть -->
     <div class="drawer-footer">
@@ -91,9 +91,14 @@ const navigate = (route) => {
 
   :deep(.q-drawer__content) {
     background: transparent !important;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
+  }
+
+  :deep(.q-list) {
+    background: transparent !important;
+  }
+
+  :deep(.q-item) {
+    background: transparent !important;
   }
 }
 

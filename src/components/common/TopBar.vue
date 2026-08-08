@@ -1,16 +1,18 @@
 <template>
   <div class="top-bar">
     <div class="top-bar-left">
-      <q-btn flat dense icon="menu" color="#C45100" @click="toggleDrawer" class="menu-btn" />
+      <UButton icon="menu" variant="ghost" @click="toggleDrawer" />
       <span class="page-title">{{ title }}</span>
     </div>
     <div class="top-bar-right">
-      <q-btn label="Добавить книгу" icon="add" class="add-book-btn-header" flat @click="openAddDialog" />
+      <UButton label="Добавить книгу" icon="add" variant="primary" @click="openAddDialog" />
     </div>
   </div>
 </template>
 
 <script setup>
+import { UButton } from 'src/components/ui'
+
 defineProps({
   title: {
     type: String,
@@ -53,27 +55,6 @@ const openAddDialog = () => {
   letter-spacing: -0.5px;
 }
 
-.menu-btn {
-  opacity: 0.7;
-  transition: opacity 0.3s ease;
-
-  &:hover {
-    opacity: 1;
-  }
-}
-
-.add-book-btn-header {
-  color: $primary-orange-light !important;
-  font-weight: 500;
-  padding: 8px 16px;
-  border-radius: $radius-sm;
-  transition: all 0.3s ease;
-
-  &:hover {
-    background: rgba($primary-orange, 0.1) !important;
-  }
-}
-
 @media (max-width: 768px) {
   .top-bar {
     flex-direction: column;
@@ -84,11 +65,6 @@ const openAddDialog = () => {
 
   .top-bar-right {
     width: 100%;
-  }
-
-  .add-book-btn-header {
-    width: 100%;
-    justify-content: center;
   }
 
   .page-title {

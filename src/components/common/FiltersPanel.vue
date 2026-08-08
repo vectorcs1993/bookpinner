@@ -1,51 +1,30 @@
 <template>
   <div class="filters-panel">
-    <div class="filters-row">
-      <!-- Поиск -->
-      <div class="filter-item search-item">
-        <q-input v-model="searchQuery" placeholder="Поиск по названию или автору..." outlined dense dark class="search-input" clearable
-          @update:model-value="handleSearch">
-          <template v-slot:prepend>
-            <q-icon name="search" color="#E05F0A" />
-          </template>
-        </q-input>
-      </div>
+    <div class="filters-grid">
+      <UInput v-model="searchQuery" placeholder="Поиск по названию или автору..." clearable @update:model-value="handleSearch">
+        <template #prepend>
+          <UIcon name="search" color="orange" />
+        </template>
+      </UInput>
 
-      <!-- Фильтр по автору -->
-      <div class="filter-item">
-        <q-select v-model="filterAuthor" :options="authorOptions" placeholder="Автор" outlined dense dark class="filter-select" clearable emit-value
-          map-options @update:model-value="applyFilters" popup-content-class="dark-menu" />
-      </div>
+      <USelect v-model="filterAuthor" :options="authorOptions" placeholder="Автор" clearable @update:model-value="applyFilters" />
 
-      <!-- Фильтр по заметкам -->
-      <div class="filter-item">
-        <q-select v-model="filterNotes" :options="notesOptions" placeholder="Заметки" outlined dense dark class="filter-select" clearable emit-value
-          map-options @update:model-value="applyFilters" popup-content-class="dark-menu" />
-      </div>
+      <USelect v-model="filterNotes" :options="notesOptions" placeholder="Заметки" clearable @update:model-value="applyFilters" />
 
-      <!-- Сортировка -->
-      <div class="filter-item">
-        <q-select v-model="sortBy" :options="sortOptions" placeholder="Сортировка" outlined dense dark class="filter-select" emit-value map-options
-          @update:model-value="applyFilters" popup-content-class="dark-menu" />
-      </div>
-
-      <!-- Кнопка сброса -->
-      <div class="filter-item reset-item">
-        <q-btn label="Сбросить" class="reset-filters-btn" flat dense @click="resetFilters" :disable="!hasActiveFilters" />
-      </div>
+      <USelect v-model="sortBy" :options="sortOptions" placeholder="Сортировка" @update:model-value="applyFilters" />
     </div>
 
-    <!-- Активные фильтры -->
-    <div v-if="hasActiveFilters" class="active-filters-row">
-      <q-chip v-for="(filter, key) in activeFilters" :key="key" removable @remove="removeFilter(key)" class="filter-chip" dark>
-        {{ filter.label }}: {{ filter.value }}
-      </q-chip>
+    <div class="filters-actions">
+      <UButton label="Сбросить" variant="secondary" size="sm" :disabled="!hasActiveFilters" @click="resetFilters" />
+      <UChip v-for="(filter, key) in activeFilters" :key="key" :label="`${filter.label}: ${filter.value}`" variant="outline" dense removable
+        @remove="removeFilter(key)" />
     </div>
   </div>
 </template>
 
 <script setup>
 import { ref, computed, watch } from 'vue'
+import { UInput, USelect, UButton, UChip, UIcon } from 'src/components/ui'
 
 const props = defineProps({
   books: {
@@ -65,7 +44,6 @@ const props = defineProps({
 
 const emit = defineEmits(['update:modelValue', 'filterChange'])
 
-// Локальное состояние
 const searchQuery = ref(props.modelValue.search || '')
 const filterAuthor = ref(props.modelValue.author || null)
 const filterNotes = ref(props.modelValue.notes || null)
@@ -73,7 +51,6 @@ const sortBy = ref(props.modelValue.sort || 'title')
 
 let searchTimeout = null
 
-// Опции
 const authorOptions = computed(() => {
   const authors = new Set(props.books.map(book => book.author))
   return Array.from(authors).map(author => ({
@@ -96,7 +73,6 @@ const sortOptions = [
   { label: 'По количеству заметок', value: 'notes' },
 ]
 
-// Активные фильтры
 const hasActiveFilters = computed(() => {
   return searchQuery.value || filterAuthor.value || filterNotes.value || sortBy.value !== 'title'
 })
@@ -125,7 +101,6 @@ const activeFilters = computed(() => {
   return filters
 })
 
-// Методы
 const handleSearch = () => {
   clearTimeout(searchTimeout)
   searchTimeout = setTimeout(() => {
@@ -171,7 +146,6 @@ const removeFilter = (key) => {
   applyFilters()
 }
 
-// Синхронизация с внешним состоянием
 watch(() => props.modelValue, (newVal) => {
   searchQuery.value = newVal.search || ''
   filterAuthor.value = newVal.author || null
@@ -188,97 +162,31 @@ watch(() => props.modelValue, (newVal) => {
   border-bottom: 1px solid rgba($primary-orange, 0.05);
 }
 
-.filters-row {
-  display: flex;
-  align-items: center;
+.filters-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
   gap: 12px;
-  flex-wrap: wrap;
-}
 
-.filter-item {
-  flex: 1;
-  min-width: 160px;
-
-  &.search-item {
-    flex: 2;
-    min-width: 200px;
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr 1fr;
   }
 
-  &.reset-item {
-    flex: 0 0 auto;
-    min-width: auto;
+  @media (max-width: 576px) {
+    grid-template-columns: 1fr;
   }
 }
 
-.search-input,
-.filter-select {
-  :deep(.q-field__control) {
-    background: $bg-card !important;
-    border: 1px solid $border-color !important;
-    border-radius: $radius-md !important;
-    transition: all 0.3s ease !important;
-    color: $text-primary !important;
-
-    &:hover {
-      border-color: $border-color-hover !important;
-      background: $bg-card-hover !important;
-    }
-
-    &:focus-within {
-      border-color: $primary-orange !important;
-      box-shadow: 0 0 0 3px rgba($primary-orange, 0.1) !important;
-    }
-  }
-
-  :deep(.q-field__native) {
-    color: $text-primary !important;
-  }
-
-  :deep(.q-field__label) {
-    color: $text-muted !important;
-  }
-}
-
-.reset-filters-btn {
-  color: $primary-orange-light !important;
-  font-size: 13px !important;
-  padding: 8px 16px !important;
-  border-radius: $radius-sm !important;
-  transition: all 0.3s ease !important;
-
-  &:hover:not(:disabled) {
-    background: rgba($primary-orange, 0.1) !important;
-  }
-
-  &:disabled {
-    opacity: 0.3;
-  }
-}
-
-.active-filters-row {
+.filters-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  align-items: center;
+  gap: 8px;
   padding-top: 10px;
 }
 
 @media (max-width: 768px) {
   .filters-panel {
     padding: 12px 16px;
-  }
-
-  .filters-row {
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .filter-item {
-    width: 100%;
-    min-width: unset;
-
-    &.reset-item {
-      width: auto;
-    }
   }
 }
 </style>

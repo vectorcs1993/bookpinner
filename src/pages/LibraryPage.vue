@@ -13,50 +13,44 @@
 
     <!-- Фильтры -->
     <div class="filters-panel">
-      <div class="row q-col-gutter-sm">
-        <div class="col-12 col-md-3">
-          <q-input v-model="filters.search" placeholder="Поиск..." outlined dense dark class="modern-input" clearable>
-            <template v-slot:prepend>
-              <q-icon name="search" color="orange" />
-            </template>
-          </q-input>
-        </div>
+      <div class="filters-grid">
+        <q-input v-model="filters.search" placeholder="Поиск по названию или автору..." outlined dense dark clearable
+          @update:model-value="handleSearch">
+          <template v-slot:prepend>
+            <q-icon name="search" color="orange" />
+          </template>
+        </q-input>
 
-        <div class="col-12 col-md-3">
-          <q-select v-model="filters.author" :options="authorOptions" placeholder="Автор" outlined dense dark class="modern-input" clearable
-            emit-value map-options />
-        </div>
+        <q-select v-model="filters.author" :options="authorOptions" placeholder="Автор" outlined dense dark clearable emit-value map-options
+          popup-content-class="dark-menu" />
 
-        <div class="col-12 col-md-3">
-          <q-select v-model="filters.notes" :options="notesOptions" placeholder="Заметки" outlined dense dark class="modern-input" clearable
-            emit-value map-options />
-        </div>
+        <q-select v-model="filters.notes" :options="notesOptions" placeholder="Заметки" outlined dense dark clearable emit-value map-options
+          popup-content-class="dark-menu" />
 
-        <div class="col-12 col-md-3">
-          <q-select v-model="filters.sort" :options="sortOptions" placeholder="Сортировка" outlined dense dark class="modern-input" emit-value
-            map-options />
-        </div>
+        <q-select v-model="filters.sort" :options="sortOptions" placeholder="Сортировка" outlined dense dark emit-value map-options
+          popup-content-class="dark-menu" />
       </div>
 
-      <div class="row q-mt-sm">
-        <div class="col-12">
-          <q-btn label="Сбросить фильтры" color="orange" flat dense @click="resetFilters" :disable="!hasActiveFilters" />
-        </div>
+      <div class="filters-actions">
+        <q-btn label="Сбросить" color="orange" flat dense :disable="!hasActiveFilters" @click="resetFilters" />
+        <q-chip v-for="(filter, key) in activeFilters" :key="key" removable @remove="removeFilter(key)" class="chip-orange" dense>
+          {{ filter.label }}: {{ filter.value }}
+        </q-chip>
       </div>
     </div>
 
     <!-- Статистика -->
     <div class="stats-row">
-      <q-chip dense class="stat-chip">
-        <q-avatar color="orange" text-color="white">📚</q-avatar>
+      <q-chip dense class="chip-orange">
+        <q-avatar color="orange" text-color="white" icon="menu_book" />
         Всего: {{ booksStore.getBooksCount }}
       </q-chip>
-      <q-chip dense class="stat-chip">
-        <q-avatar color="orange" text-color="white">🔍</q-avatar>
+      <q-chip dense class="chip-orange">
+        <q-avatar color="orange" text-color="white" icon="search" />
         Найдено: {{ filteredBooks.length }}
       </q-chip>
-      <q-chip dense class="stat-chip">
-        <q-avatar color="orange" text-color="white">📝</q-avatar>
+      <q-chip dense class="chip-orange">
+        <q-avatar color="orange" text-color="white" icon="description" />
         С заметками: {{ booksStore.getBooksWithNotesCount }}
       </q-chip>
     </div>
@@ -68,83 +62,75 @@
         <div class="q-mt-sm text-white">Загрузка...</div>
       </div>
 
-      <div v-else-if="filteredBooks.length === 0" class="text-center q-pa-xl">
-        <q-icon name="search_off" size="80px" color="orange" />
+      <div v-else-if="filteredBooks.length === 0" class="empty-state">
+        <q-icon name="search_off" size="80px" color="#8C3800" />
         <div class="text-h6 text-white q-mt-md">Книги не найдены</div>
-      </div>
-
-      <div v-else class="row q-col-gutter-md">
-        <div v-for="book in filteredBooks" :key="book.id" class="col-6 col-sm-4 col-md-3 col-lg-2">
-          <div class="book-card" @click="openPreview(book)">
-            <q-img :src="book.coverUrl || defaultCover" :ratio="3 / 4" fit="cover" class="rounded-borders">
-              <div class="book-overlay">
-                <div class="book-title">{{ book.title }}</div>
-                <div class="book-author">{{ book.author }}</div>
-                <q-badge color="orange" floating>
-                  {{ book.notes.length }}
-                  <q-icon name="description" size="12px" />
-                </q-badge>
-              </div>
-            </q-img>
-          </div>
+        <div class="text-subtitle1" style="color: rgba(255,255,255,0.5)">
+          Попробуйте изменить параметры поиска
         </div>
       </div>
+
+      <BookShelf v-else :books="filteredBooks" @book-click="openPreview" />
     </div>
 
-    <!-- Диалоги -->
+    <!-- Диалог добавления книги -->
     <q-dialog v-model="showAddDialog">
-      <q-card dark class="q-pa-md" style="min-width: 400px;">
+      <q-card class="q-pa-md" style="min-width: 400px;">
         <q-card-section>
-          <div class="text-h6">📖 Добавить книгу</div>
+          <div class="text-h6" style="font-weight: 300;">📖 Добавить книгу</div>
         </q-card-section>
 
+        <q-separator :style="{ backgroundColor: 'rgba(140, 56, 0, 0.2)' }" />
+
         <q-card-section>
-          <q-input v-model="newBook.title" label="Название *" outlined dark class="q-mb-sm" />
-          <q-input v-model="newBook.author" label="Автор *" outlined dark class="q-mb-sm" />
-          <q-input v-model="newBook.coverUrl" label="URL обложки" outlined dark />
+          <q-input v-model="newBook.title" label="Название *" outlined dense dark class="q-mb-sm" />
+          <q-input v-model="newBook.author" label="Автор *" outlined dense dark class="q-mb-sm" />
+          <q-input v-model="newBook.coverUrl" label="URL обложки" outlined dense dark />
         </q-card-section>
 
         <q-card-actions align="right">
-          <q-btn label="Отмена" color="white" flat v-close-popup />
-          <q-btn label="Добавить" color="orange" @click="addBook" :disable="!newBook.title || !newBook.author" />
+          <q-btn label="Отмена" flat color="orange" v-close-popup />
+          <q-btn label="Добавить книгу" color="primary" :disable="!newBook.title || !newBook.author" @click="addBook" />
         </q-card-actions>
       </q-card>
     </q-dialog>
 
+    <!-- Диалог просмотра книги -->
     <q-dialog v-model="previewDialog">
-      <q-card v-if="selectedBook" dark class="q-pa-md" style="min-width: 400px; max-width: 600px;">
+      <q-card v-if="selectedBook" class="q-pa-md" style="min-width: 400px; max-width: 600px;">
         <q-card-section class="row">
-          <div class="col-4">
-            <q-img :src="selectedBook.coverUrl || defaultCover" :ratio="3 / 4" fit="cover" class="rounded-borders" />
+          <div class="col-12 col-sm-4">
+            <q-img :src="selectedBook.coverUrl || defaultCover" :ratio="5 / 7" fit="cover" class="rounded-borders"
+              style="border: 2px solid rgba(140, 56, 0, 0.4);" />
           </div>
-          <div class="col-8 q-pl-md">
-            <div class="text-h6">{{ selectedBook.title }}</div>
-            <div class="text-subtitle1 q-mb-md">{{ selectedBook.author }}</div>
+          <div class="col-12 col-sm-8 q-pl-md">
+            <div class="text-h6" style="font-weight: 300;">{{ selectedBook.title }}</div>
+            <div class="text-subtitle1 q-mb-md"><strong>Автор:</strong> {{ selectedBook.author }}</div>
 
-            <q-separator class="q-mb-md" />
+            <q-separator :style="{ backgroundColor: 'rgba(140, 56, 0, 0.4)' }" class="q-mb-md" />
 
             <div class="row items-center q-mb-sm">
-              <span class="text-subtitle1">📝 Заметки</span>
+              <span class="text-subtitle1" style="font-weight: 300;">📝 Заметки</span>
               <q-space />
               <q-btn size="sm" color="orange" flat icon="add" @click="addNoteToBook" />
             </div>
 
-            <q-input v-model="newNote" label="Новая заметка" outlined dense dark class="q-mb-md" @keyup.enter="addNoteToBook" />
+            <q-input v-model="newNote" label="Текст заметки" outlined dense dark class="q-mb-md" @keyup.enter="addNoteToBook" />
 
-            <div v-if="selectedBook.notes.length === 0" class="text-center text-grey">
-              Нет заметок
+            <div v-if="selectedBook.notes.length === 0" class="text-center" style="color: rgba(255,255,255,0.5); padding: 20px; font-style: italic;">
+              Нет заметок для этой книги
             </div>
 
             <div v-for="(note, index) in selectedBook.notes" :key="index" class="note-item">
               <q-icon name="bookmark" color="orange" size="16px" class="q-mr-sm" />
-              {{ note }}
-              <q-btn icon="close" size="xs" flat dense color="red" class="q-ml-auto" @click="deleteNoteFromBook(index)" />
+              <span class="text-white">{{ note }}</span>
+              <q-btn icon="delete" size="sm" flat dense color="negative" class="q-ml-auto" @click="deleteNoteFromBook(index)" />
             </div>
           </div>
         </q-card-section>
 
         <q-card-actions align="right">
-          <q-btn label="Закрыть" color="white" flat v-close-popup />
+          <q-btn label="Закрыть" flat color="orange" v-close-popup />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -155,16 +141,16 @@
 import { ref, reactive, computed } from 'vue'
 import { useBooksStore } from 'src/stores/books-store'
 import { useQuasar } from 'quasar'
+import BookShelf from 'src/components/books/BookShelf.vue'
 
 const $q = useQuasar()
 const booksStore = useBooksStore()
 
-// Состояние
 const showAddDialog = ref(false)
 const previewDialog = ref(false)
 const selectedBook = ref(null)
 const newNote = ref('')
-const defaultCover = 'https://via.placeholder.com/300x400/2a1c14/FFFFFF?text=Нет+обложки'
+const defaultCover = 'https://via.placeholder.com/300x420/8C3800/FFFFFF?text=Нет+обложки'
 
 const filters = reactive({
   search: '',
@@ -179,10 +165,9 @@ const newBook = reactive({
   coverUrl: '',
 })
 
-// Эмит для управления drawer
 const emit = defineEmits(['toggleDrawer'])
+let searchTimeout = null
 
-// Опции
 const authorOptions = computed(() => {
   const authors = new Set(booksStore.getBooks.map(book => book.author))
   return Array.from(authors).map(author => ({
@@ -205,7 +190,6 @@ const sortOptions = [
   { label: 'По заметкам', value: 'notes' },
 ]
 
-// Фильтрация
 const filteredBooks = computed(() => {
   let result = [...booksStore.getBooks]
 
@@ -254,12 +238,44 @@ const hasActiveFilters = computed(() => {
   return filters.search || filters.author || filters.notes || filters.sort !== 'title'
 })
 
-// Методы
+const activeFilters = computed(() => {
+  const f = {}
+
+  if (filters.search) f.search = { label: 'Поиск', value: filters.search }
+  if (filters.author) f.author = { label: 'Автор', value: filters.author }
+  if (filters.notes) {
+    const label = notesOptions.find(opt => opt.value === filters.notes)?.label
+    f.notes = { label: 'Заметки', value: label }
+  }
+  if (filters.sort !== 'title') {
+    const label = sortOptions.find(opt => opt.value === filters.sort)?.label
+    f.sort = { label: 'Сортировка', value: label }
+  }
+
+  return f
+})
+
+const handleSearch = () => {
+  clearTimeout(searchTimeout)
+  searchTimeout = setTimeout(() => {
+    // search уже обновился через v-model
+  }, 500)
+}
+
 const resetFilters = () => {
   filters.search = ''
   filters.author = null
   filters.notes = null
   filters.sort = 'title'
+}
+
+const removeFilter = (key) => {
+  switch (key) {
+    case 'search': filters.search = ''; break
+    case 'author': filters.author = null; break
+    case 'notes': filters.notes = null; break
+    case 'sort': filters.sort = 'title'; break
+  }
 }
 
 const addBook = () => {
@@ -317,75 +333,66 @@ const deleteNoteFromBook = (index) => {
   font-size: 24px;
   font-weight: 600;
   color: $text-primary;
+  letter-spacing: -0.5px;
 }
 
 .filters-panel {
-  padding: 16px 32px;
+  padding: 16px 32px 12px;
   border-bottom: 1px solid rgba($primary-orange, 0.05);
+}
+
+.filters-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 12px;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @media (max-width: 576px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.filters-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding-top: 10px;
 }
 
 .stats-row {
   display: flex;
+  flex-wrap: wrap;
   gap: 12px;
   padding: 12px 32px;
   border-bottom: 1px solid rgba($primary-orange, 0.05);
-}
-
-.stat-chip {
-  background: $bg-card !important;
-  color: $text-primary !important;
 }
 
 .books-grid {
   padding: 24px 32px;
 }
 
-.book-card {
-  cursor: pointer;
-  transition: all 0.3s ease;
-  position: relative;
-
-  &:hover {
-    transform: translateY(-8px) scale(1.02);
-    z-index: 10;
-  }
-}
-
-.book-overlay {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 16px;
-  background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.9));
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  border-radius: 0 0 8px 8px;
-
-  .book-card:hover & {
-    opacity: 1;
-  }
-}
-
-.book-title {
-  color: white;
-  font-weight: 600;
-  font-size: 14px;
-}
-
-.book-author {
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 12px;
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
 }
 
 .note-item {
   display: flex;
   align-items: center;
-  padding: 8px 12px;
+  padding: 10px 14px;
   margin-bottom: 8px;
   background: $bg-card;
-  border-left: 3px solid $primary-orange;
-  border-radius: 4px;
+  border-left: 4px solid $primary-orange;
+  border-radius: 0 $radius-sm $radius-sm 0;
+  transition: background 0.2s;
+
+  &:hover {
+    background: $bg-card-hover;
+  }
 }
 
 @media (max-width: 768px) {
@@ -406,7 +413,6 @@ const deleteNoteFromBook = (index) => {
 
   .stats-row {
     padding: 8px 16px;
-    flex-wrap: wrap;
   }
 
   .books-grid {

@@ -1,57 +1,45 @@
 <template>
-  <q-dialog v-model="dialogVisible" class="preview-dialog">
-    <q-card v-if="book" class="antique-card">
-      <q-card-section class="row items-center q-pb-none">
-        <div class="text-h5 text-white" style="font-weight: 300;">{{ book.title }}</div>
-        <q-space />
-        <q-btn icon="close" flat round dense color="#C45100" v-close-popup />
-      </q-card-section>
-
-      <q-card-section class="row q-col-gutter-md">
-        <div class="col-12 col-sm-4">
-          <q-img :src="book.coverUrl || defaultCover" :ratio="5 / 7" fit="cover" class="rounded-borders antique-img" />
+  <UDialog v-model="dialogVisible" :title="book?.title || 'Preview'">
+    <div v-if="book" class="preview-content">
+      <div class="preview-cover">
+        <q-img :src="book.coverUrl || defaultCover" :ratio="5 / 7" fit="cover" class="rounded-borders" />
+      </div>
+      <div class="preview-info">
+        <div class="text-subtitle1 text-white q-mb-md">
+          <strong>Автор:</strong> {{ book.author }}
         </div>
 
-        <div class="col-12 col-sm-8">
-          <div class="text-subtitle1 text-white q-mb-md">
-            <strong>Автор:</strong> {{ book.author }}
+        <q-separator :style="{ backgroundColor: 'rgba(140, 56, 0, 0.4)' }" class="q-mb-md" />
+
+        <div class="notes-section">
+          <div class="notes-header">
+            <span class="text-subtitle1 text-white" style="font-weight: 300;">📝 Заметки</span>
+            <UButton icon="add" variant="secondary" size="sm" @click="addNote" />
           </div>
 
-          <q-separator :style="{ backgroundColor: 'rgba(140, 56, 0, 0.4)' }" class="q-mb-md" />
+          <UInput v-model="newNoteText" placeholder="Текст заметки..." @keyup.enter="addNote" class="q-mb-sm" />
 
-          <div class="row items-center q-mb-sm">
-            <div class="text-subtitle1 text-white" style="font-weight: 300;">📝 Заметки</div>
-            <q-space />
-            <q-btn label="Добавить" class="modern-btn-sm" size="sm" flat icon="add" @click="addNote" />
-          </div>
-
-          <q-input v-model="newNoteText" label="Текст заметки" outlined dense dark class="q-mb-md modern-input" @keyup.enter="addNote" />
-
-          <div v-if="book.notes.length === 0" class="empty-state text-center" style="color: rgba(255,255,255,0.5)">
+          <div v-if="book.notes.length === 0" class="empty-notes">
             Нет заметок для этой книги
           </div>
 
-          <div v-for="(note, index) in book.notes" :key="index" class="note-item row items-center">
-            <div class="col text-white">
-              <q-icon name="bookmark" color="#E05F0A" size="16px" class="q-mr-sm" />
-              {{ note }}
-            </div>
-            <div>
-              <q-btn icon="delete" size="sm" flat dense color="#C45100" @click="deleteNote(index)" />
-            </div>
+          <div v-for="(note, index) in book.notes" :key="index" class="note-item">
+            <UIcon name="bookmark" color="#E05F0A" size="16px" class="q-mr-sm" />
+            <span class="text-white">{{ note }}</span>
+            <UButton icon="delete" variant="ghost" size="sm" color="negative" class="q-ml-auto" @click="deleteNote(index)" />
           </div>
         </div>
-      </q-card-section>
-
-      <q-card-actions align="right" class="q-pa-md">
-        <q-btn label="Закрыть" class="modern-btn" v-close-popup />
-      </q-card-actions>
-    </q-card>
-  </q-dialog>
+      </div>
+    </div>
+    <template #actions>
+      <UButton label="Закрыть" variant="ghost" @click="dialogVisible = false" />
+    </template>
+  </UDialog>
 </template>
 
 <script setup>
 import { ref, computed, watch } from 'vue'
+import { UDialog, UInput, UButton, UIcon } from 'src/components/ui'
 
 const props = defineProps({
   modelValue: {
@@ -95,37 +83,61 @@ watch(() => props.modelValue, (newVal) => {
 <style scoped lang="scss">
 @import 'src/css/quasar.variables.scss';
 
-.preview-dialog {
-  :deep(.q-dialog__inner) {
-    min-width: 400px;
+.preview-content {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 20px;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
   }
 }
 
+.preview-cover {
+  max-width: 300px;
+
+  :deep(.q-img) {
+    border: 2px solid rgba($primary-orange-dark, 0.4);
+    box-shadow: $shadow-card;
+    border-radius: $radius-sm;
+  }
+}
+
+.preview-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.notes-section {
+  flex: 1;
+}
+
+.notes-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
 .note-item {
-  border-left: 4px solid $primary-orange;
+  display: flex;
+  align-items: center;
+  padding: 10px 14px;
+  margin-bottom: 8px;
   background: $bg-card;
-  margin-bottom: 10px;
-  padding: 12px 16px;
+  border-left: 4px solid $primary-orange;
   border-radius: 0 $radius-sm $radius-sm 0;
-  transition: 0.2s;
+  transition: background 0.2s;
 
   &:hover {
     background: $bg-card-hover;
   }
 }
 
-.empty-state {
-  opacity: 0.6;
-  font-style: italic;
+.empty-notes {
   padding: 20px;
+  text-align: center;
   color: $text-muted;
-}
-
-@media (max-width: 768px) {
-  .preview-dialog {
-    :deep(.q-dialog__inner) {
-      min-width: 320px;
-    }
-  }
+  font-style: italic;
 }
 </style>

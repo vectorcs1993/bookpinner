@@ -1,13 +1,13 @@
 <template>
   <div class="bookshelf-wrapper">
     <div v-if="loading" class="text-center q-py-lg">
-      <q-spinner color="#E05F0A" size="3em" />
+      <q-spinner color="orange" size="3em" />
       <div class="q-mt-sm text-white">Загрузка каталога...</div>
     </div>
 
     <div v-else class="shelves-container" ref="shelvesContainer">
-      <div v-if="shelves.length === 0" class="text-center q-pa-xl">
-        <q-icon name="search_off" size="80px" :style="{ color: '#8C3800' }" />
+      <div v-if="books.length === 0" class="empty-state">
+        <q-icon name="search_off" size="80px" color="#8C3800" />
         <div class="text-h6 text-white q-mt-md">Книги не найдены</div>
         <div class="text-subtitle1" style="color: rgba(255,255,255,0.5)">
           Попробуйте изменить параметры поиска
@@ -197,6 +197,11 @@ onBeforeUnmount(() => {
   height: 8px;
   position: relative;
   background: rgba($primary-orange, 0.125);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
 }
 
 @media (max-width: 1200px) {

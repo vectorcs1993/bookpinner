@@ -6,7 +6,7 @@
           <div class="book-title">{{ book.title }}</div>
           <div class="book-author">{{ book.author }}</div>
           <div class="book-notes-badge">
-            <q-icon name="description" size="12px" />
+            <UIcon name="description" size="12px" />
             {{ book.notes.length }}
           </div>
         </div>
@@ -16,7 +16,7 @@
     <q-tooltip v-if="book.notes.length > 0" anchor="top middle" self="bottom middle" :offset="[0, 10]" class="modern-tooltip">
       <div class="text-weight-medium text-white q-mb-sm">📝 Заметки ({{ book.notes.length }})</div>
       <div v-for="(note, idx) in book.notes" :key="idx" class="note-tooltip-item">
-        <q-icon name="bookmark" color="#E05F0A" size="12px" class="q-mr-xs" />
+        <UIcon name="bookmark" color="#E05F0A" size="12px" class="q-mr-xs" />
         {{ note }}
       </div>
     </q-tooltip>
@@ -24,6 +24,8 @@
 </template>
 
 <script setup>
+import { UIcon } from 'src/components/ui'
+
 const props = defineProps({
   book: {
     type: Object,
