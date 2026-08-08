@@ -1,4 +1,4 @@
-import { defineStore, acceptHMRUpdate } from 'pinia'
+import { defineStore } from 'pinia'
 
 export const useBooksStore = defineStore('books', {
   state: () => ({
@@ -78,35 +78,21 @@ export const useBooksStore = defineStore('books', {
   }),
 
   getters: {
-    // Все книги
     getBooks: (state) => state.books,
-
-    // Количество книг
     getBooksCount: (state) => state.books.length,
-
-    // Книги с заметками
     getBooksWithNotes: (state) => state.books.filter(book => book.notes.length > 0),
-
-    // Количество книг с заметками
     getBooksWithNotesCount: (state) => state.books.filter(book => book.notes.length > 0).length,
-
-    // Получить книгу по ID
     getBookById: (state) => (id) => state.books.find(book => book.id === id),
-
-    // Получить всех авторов
     getAuthors: (state) => {
       const authors = new Set(state.books.map(book => book.author))
       return Array.from(authors)
     },
-
-    // Общее количество заметок
     getTotalNotesCount: (state) => {
       return state.books.reduce((total, book) => total + book.notes.length, 0)
     },
   },
 
   actions: {
-    // Добавить книгу
     addBook(bookData) {
       const newBook = {
         id: Date.now(),
@@ -118,7 +104,6 @@ export const useBooksStore = defineStore('books', {
       this.books.push(newBook)
     },
 
-    // Обновить книгу
     updateBook(id, updates) {
       const index = this.books.findIndex(book => book.id === id)
       if (index !== -1) {
@@ -126,12 +111,10 @@ export const useBooksStore = defineStore('books', {
       }
     },
 
-    // Удалить книгу
     deleteBook(id) {
       this.books = this.books.filter(book => book.id !== id)
     },
 
-    // Добавить заметку к книге
     addNote(bookId, note) {
       const book = this.books.find(book => book.id === bookId)
       if (book) {
@@ -139,7 +122,6 @@ export const useBooksStore = defineStore('books', {
       }
     },
 
-    // Удалить заметку из книги
     deleteNote(bookId, noteIndex) {
       const book = this.books.find(book => book.id === bookId)
       if (book && noteIndex >= 0 && noteIndex < book.notes.length) {
@@ -147,7 +129,6 @@ export const useBooksStore = defineStore('books', {
       }
     },
 
-    // Обновить заметку
     updateNote(bookId, noteIndex, newNote) {
       const book = this.books.find(book => book.id === bookId)
       if (book && noteIndex >= 0 && noteIndex < book.notes.length) {
@@ -155,17 +136,14 @@ export const useBooksStore = defineStore('books', {
       }
     },
 
-    // Установить состояние загрузки
     setLoading(status) {
       this.loading = status
     },
 
-    // Очистить все книги
     clearBooks() {
       this.books = []
     },
 
-    // Загрузить книги (для API)
     async fetchBooks() {
       this.setLoading(true)
       try {
@@ -180,8 +158,3 @@ export const useBooksStore = defineStore('books', {
     },
   },
 })
-
-// Поддержка HMR (Hot Module Replacement)
-if (import.meta.hot) {
-  import.meta.hot.accept(acceptHMRUpdate(useBooksStore, import.meta.hot))
-}

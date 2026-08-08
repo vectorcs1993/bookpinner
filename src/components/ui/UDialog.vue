@@ -2,7 +2,6 @@
   <q-dialog v-model="localValue" :persistent="persistent" :maximized="maximized" :full-width="fullWidth" :full-height="fullHeight"
     :position="position" :class="['u-dialog', dialogClass]" @update:model-value="handleUpdate" v-bind="$attrs">
     <q-card class="u-dialog-card">
-      <!-- Заголовок -->
       <q-card-section v-if="title || $slots.title" class="u-dialog-header">
         <div class="row items-center">
           <div class="text-h6" style="font-weight: 300;">
@@ -13,14 +12,12 @@
         </div>
       </q-card-section>
 
-      <q-separator v-if="title || $slots.title" :style="{ backgroundColor: 'rgba(140, 56, 0, 0.2)' }" />
+      <q-separator v-if="title || $slots.title" />
 
-      <!-- Контент -->
       <q-card-section class="u-dialog-body">
         <slot />
       </q-card-section>
 
-      <!-- Действия -->
       <q-card-actions v-if="$slots.actions || actions" align="right" class="u-dialog-actions">
         <slot name="actions">
           <UButton v-for="action in actions" :key="action.label" :label="action.label" :variant="action.variant || 'secondary'"
@@ -32,7 +29,7 @@
 </template>
 
 <script setup>
-import { ref, watch, computed } from 'vue'
+import { ref, watch } from 'vue'
 import UButton from './UButton.vue'
 
 const props = defineProps({
@@ -76,8 +73,6 @@ const close = () => {
 </script>
 
 <style scoped lang="scss">
-@import 'src/css/quasar.variables.scss';
-
 .u-dialog {
   :deep(.q-dialog__inner) {
     min-width: 400px;
@@ -93,19 +88,11 @@ const close = () => {
 }
 
 .u-dialog-card {
-  background: linear-gradient(180deg, $bg-dark-start 0%, $bg-dark-end 100%) !important;
-  color: $text-primary !important;
-  border: 1px solid $border-color !important;
-  border-radius: $radius-lg !important;
+  border-radius: 12px !important;
 }
 
 .u-dialog-header {
   padding: 16px 20px !important;
-
-  .text-h6 {
-    color: $text-primary;
-    font-weight: 300;
-  }
 }
 
 .u-dialog-body {
@@ -115,6 +102,6 @@ const close = () => {
 .u-dialog-actions {
   padding: 12px 20px !important;
   gap: 8px;
-  border-top: 1px solid rgba($border-color, 0.5);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 </style>

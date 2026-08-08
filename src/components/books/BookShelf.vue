@@ -2,22 +2,25 @@
   <div class="bookshelf-wrapper">
     <div v-if="loading" class="text-center q-py-lg">
       <q-spinner color="orange" size="3em" />
-      <div class="q-mt-sm text-white">Загрузка каталога...</div>
+      <div class="q-mt-sm">Загрузка каталога...</div>
     </div>
 
-    <div v-else class="shelves-container" ref="shelvesContainer">
-      <div v-if="books.length === 0" class="empty-state">
-        <q-icon name="search_off" size="80px" color="#8C3800" />
-        <div class="text-h6 text-white q-mt-md">Книги не найдены</div>
-        <div class="text-subtitle1" style="color: rgba(255,255,255,0.5)">
+    <div v-else class="shelves-container">
+      <div v-if="books.length === 0" class="text-center q-py-lg">
+        <q-icon name="search_off" size="80px" color="orange" />
+        <div class="text-h6 q-mt-md">Книги не найдены</div>
+        <div class="text-subtitle1" style="opacity: 0.5">
           Попробуйте изменить параметры поиска
         </div>
       </div>
 
       <div v-else v-for="(shelf, shelfIndex) in shelves" :key="shelfIndex" class="shelf-row">
-        <div class="shelf-content" :style="gridStyle">
-          <BookCard v-for="book in shelf" :key="book.id" :book="book" @click="openPreview" />
+        <div class="shelf-content">
+          <div class="books-grid" :style="gridStyle">
+            <BookCard v-for="book in shelf" :key="book.id" :book="book" @click="openPreview" />
+          </div>
         </div>
+        <!-- Полка-разделитель между рядами -->
         <div v-if="shelfIndex < shelves.length - 1" class="shelf-divider"></div>
       </div>
     </div>
@@ -41,10 +44,8 @@ const props = defineProps({
 
 const emit = defineEmits(['bookClick'])
 
-const shelvesContainer = ref(null)
 const columnsPerRow = ref(4)
 let resizeTimeout = null
-let resizeObserver = null
 
 const shelves = computed(() => {
   const perRow = columnsPerRow.value
@@ -62,37 +63,22 @@ const gridStyle = computed(() => {
     gap: '20px',
     justifyItems: 'center',
     alignItems: 'start',
-    width: '100%',
   }
 })
 
 const calculateColumns = () => {
-  if (!shelvesContainer.value) return 4
+  const width = window.innerWidth
 
-  const width = shelvesContainer.value.clientWidth
-
-  let maxBookWidth
-  if (width < 480) maxBookWidth = 100
-  else if (width < 576) maxBookWidth = 110
-  else if (width < 768) maxBookWidth = 130
-  else if (width < 992) maxBookWidth = 150
-  else if (width < 1200) maxBookWidth = 160
-  else if (width < 1440) maxBookWidth = 170
-  else maxBookWidth = 180
-
-  const padding = 50
-  const gap = 25
-  const availableWidth = width - padding
-  const columns = Math.floor((availableWidth + gap) / (maxBookWidth + gap))
-
-  return Math.max(1, Math.min(columns, 12))
+  if (width < 480) return 2
+  if (width < 576) return 3
+  if (width < 768) return 4
+  if (width < 992) return 5
+  if (width < 1200) return 6
+  return 8
 }
 
 const updateColumns = () => {
-  const newColumns = calculateColumns()
-  if (columnsPerRow.value !== newColumns) {
-    columnsPerRow.value = newColumns
-  }
+  columnsPerRow.value = calculateColumns()
 }
 
 const handleResize = () => {
@@ -102,25 +88,6 @@ const handleResize = () => {
   }, 100)
 }
 
-const setupResizeObserver = () => {
-  if (resizeObserver) {
-    resizeObserver.disconnect()
-  }
-
-  resizeObserver = new ResizeObserver(() => {
-    clearTimeout(resizeTimeout)
-    resizeTimeout = setTimeout(() => {
-      updateColumns()
-    }, 100)
-  })
-
-  if (shelvesContainer.value) {
-    resizeObserver.observe(shelvesContainer.value)
-  }
-
-  window.addEventListener('resize', handleResize)
-}
-
 const openPreview = (book) => {
   emit('bookClick', book)
 }
@@ -128,15 +95,11 @@ const openPreview = (book) => {
 onMounted(() => {
   nextTick(() => {
     updateColumns()
-    setupResizeObserver()
+    window.addEventListener('resize', handleResize)
   })
 })
 
 onBeforeUnmount(() => {
-  if (resizeObserver) {
-    resizeObserver.disconnect()
-    resizeObserver = null
-  }
   window.removeEventListener('resize', handleResize)
   clearTimeout(resizeTimeout)
 })
@@ -146,18 +109,14 @@ onBeforeUnmount(() => {
 @import 'src/css/quasar.variables.scss';
 
 .bookshelf-wrapper {
-  padding: 30px 32px 40px;
+  padding: 16px 0;
   min-height: 400px;
 }
 
 .shelves-container {
   max-width: 1600px;
   margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 0;
   background: rgba($bg-dark-start, 0.3);
-  border-radius: 0;
   border-left: 8px solid rgba($primary-orange, 0.125);
   border-right: 8px solid rgba($primary-orange, 0.125);
   box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6), inset 0 0 60px rgba($primary-orange, 0.03);
@@ -186,11 +145,11 @@ onBeforeUnmount(() => {
   background: rgba($bg-dark-end, 0.08);
   min-height: 240px;
   position: relative;
+}
 
-  >[style*="display: grid"] {
-    justify-content: center !important;
-    margin: 0 auto !important;
-  }
+.books-grid {
+  justify-content: center;
+  width: 100%;
 }
 
 .shelf-divider {
@@ -199,37 +158,44 @@ onBeforeUnmount(() => {
   background: rgba($primary-orange, 0.125);
 }
 
-.empty-state {
-  text-align: center;
-  padding: 60px 20px;
-}
-
-@media (max-width: 1200px) {
-  .shelf-content {
-    padding: 16px 20px;
-    min-height: 220px;
+// Стили для светлой темы
+body.body--light {
+  .shelves-container {
+    background: rgba($bg-light-start, 0.3);
+    border-left-color: rgba($primary-orange, 0.1);
+    border-right-color: rgba($primary-orange, 0.1);
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.1), inset 0 0 60px rgba($primary-orange, 0.02);
   }
 
-  .bookshelf-wrapper {
-    padding: 20px 24px 30px;
-  }
-}
+  .shelf-row {
+    background: rgba($bg-light-end, 0.15);
 
-@media (max-width: 992px) {
+    &:first-child {
+      border-top-color: rgba($primary-orange, 0.1);
+    }
+
+    &:last-child {
+      border-bottom-color: rgba($primary-orange, 0.1);
+    }
+  }
+
   .shelf-content {
-    padding: 14px 16px;
-    min-height: 200px;
+    background: rgba($bg-light-end, 0.05);
+  }
+
+  .shelf-divider {
+    background: rgba($primary-orange, 0.1);
   }
 }
 
 @media (max-width: 768px) {
-  .shelf-content {
-    padding: 12px 14px;
-    min-height: 180px;
+  .bookshelf-wrapper {
+    padding: 8px 0;
   }
 
-  .bookshelf-wrapper {
-    padding: 16px 16px 24px;
+  .shelf-content {
+    padding: 12px 16px;
+    min-height: 180px;
   }
 
   .shelves-container {
@@ -245,6 +211,10 @@ onBeforeUnmount(() => {
     &:last-child {
       border-bottom-width: 2px;
     }
+  }
+
+  .shelf-divider {
+    height: 2px;
   }
 }
 

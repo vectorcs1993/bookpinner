@@ -1,6 +1,6 @@
 <template>
   <q-radio v-model="localValue" :val="value" :label="label" :color="color" :dark="dark" :disable="disabled" :dense="dense" :size="size"
-    :class="['u-radio', { 'u-radio-error': error }]" @update:model-value="handleUpdate" v-bind="$attrs">
+    :class="{ 'u-radio-error': error }" v-bind="$attrs" @update:model-value="handleUpdate">
     <template v-if="$slots.default" #default>
       <slot />
     </template>
@@ -41,21 +41,9 @@ const handleUpdate = (value) => {
 </script>
 
 <style scoped lang="scss">
-@import 'src/css/quasar.variables.scss';
-
-.u-radio {
-  :deep(.q-radio__label) {
-    color: $text-primary;
-  }
-
-  :deep(.q-radio__svg) {
-    color: $primary-orange;
-  }
-
-  &-error {
-    :deep(.q-radio__inner) {
-      border-color: $negative !important;
-    }
+.u-radio-error {
+  :deep(.q-radio__inner) {
+    border-color: #c10015 !important;
   }
 }
 </style>

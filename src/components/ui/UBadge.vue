@@ -1,6 +1,6 @@
 <template>
   <q-badge :label="label" :color="color" :text-color="textColor" :floating="floating" :transparent="transparent" :multi-line="multiLine"
-    :class="['u-badge', `u-badge-${variant}`]" v-bind="$attrs">
+    :class="['u-badge', badgeClass]" v-bind="$attrs">
     <slot />
   </q-badge>
 </template>
@@ -19,26 +19,23 @@ const props = defineProps({
   transparent: { type: Boolean, default: false },
   multiLine: { type: Boolean, default: false },
 })
+
+const badgeClass = {
+  'u-badge-outline': props.variant === 'outline',
+  'u-badge-glow': props.variant === 'glow',
+  'u-badge-dot': props.variant === 'dot',
+}
 </script>
 
 <style scoped lang="scss">
-@import 'src/css/quasar.variables.scss';
-
 .u-badge {
-  &-default {
-    background: $primary-orange !important;
-  }
-
   &-outline {
     background: transparent !important;
-    color: $primary-orange-light !important;
-    border: 1px solid $primary-orange !important;
+    border: 1px solid currentColor !important;
   }
 
   &-glow {
-    background: rgba($primary-orange, 0.2) !important;
-    color: $text-primary !important;
-    box-shadow: 0 0 20px rgba($primary-orange, 0.2) !important;
+    box-shadow: 0 0 20px rgba(196, 81, 0, 0.2) !important;
   }
 
   &-dot {
@@ -47,7 +44,6 @@ const props = defineProps({
     padding: 0 !important;
     min-width: 8px !important;
     border-radius: 50% !important;
-    background: $primary-orange !important;
   }
 }
 </style>

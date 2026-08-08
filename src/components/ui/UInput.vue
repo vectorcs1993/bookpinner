@@ -1,8 +1,7 @@
 <template>
   <q-input v-model="localValue" :label="label" :placeholder="placeholder" :type="type" :dense="dense" :outlined="variant === 'outlined'"
     :filled="variant === 'filled'" :standout="variant === 'standout'" :dark="dark" :clearable="clearable" :loading="loading" :disable="disabled"
-    :error="error" :error-message="errorMessage" :class="['u-input', `u-input-${variant}`]" v-bind="$attrs" @update:model-value="handleUpdate"
-    @focus="handleFocus" @blur="handleBlur">
+    :error="error" :error-message="errorMessage" v-bind="$attrs" @update:model-value="handleUpdate" @focus="handleFocus" @blur="handleBlur">
     <template v-if="$slots.prepend" #prepend>
       <slot name="prepend" />
     </template>
@@ -62,48 +61,3 @@ const handleBlur = (event) => {
   emit('blur', event)
 }
 </script>
-
-<style scoped lang="scss">
-@import 'src/css/quasar.variables.scss';
-
-.u-input {
-  :deep(.q-field__control) {
-    background: $bg-card !important;
-    border: 1px solid $border-color !important;
-    border-radius: $radius-md !important;
-    transition: all 0.3s ease !important;
-    color: $text-primary !important;
-
-    &:hover {
-      border-color: $border-color-hover !important;
-      background: $bg-card-hover !important;
-    }
-
-    &:focus-within {
-      border-color: $primary-orange !important;
-      box-shadow: 0 0 0 3px rgba($primary-orange, 0.1) !important;
-    }
-  }
-
-  :deep(.q-field__native) {
-    color: $text-primary !important;
-  }
-
-  :deep(.q-field__label) {
-    color: $text-muted !important;
-  }
-
-  &-filled {
-    :deep(.q-field__control) {
-      background: rgba($bg-card, 0.8) !important;
-    }
-  }
-
-  &-standout {
-    :deep(.q-field__control) {
-      background: rgba($bg-card, 0.4) !important;
-      border-color: transparent !important;
-    }
-  }
-}
-</style>

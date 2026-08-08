@@ -1,6 +1,6 @@
 <template>
   <q-checkbox v-model="localValue" :label="label" :color="color" :dark="dark" :disable="disabled" :dense="dense" :size="size"
-    :class="['u-checkbox', { 'u-checkbox-error': error }]" @update:model-value="handleUpdate" v-bind="$attrs">
+    :class="{ 'u-checkbox-error': error }" v-bind="$attrs" @update:model-value="handleUpdate">
     <template v-if="$slots.default" #default>
       <slot />
     </template>
@@ -40,21 +40,9 @@ const handleUpdate = (value) => {
 </script>
 
 <style scoped lang="scss">
-@import 'src/css/quasar.variables.scss';
-
-.u-checkbox {
-  :deep(.q-checkbox__label) {
-    color: $text-primary;
-  }
-
-  :deep(.q-checkbox__svg) {
-    color: $primary-orange;
-  }
-
-  &-error {
-    :deep(.q-checkbox__inner) {
-      border-color: $negative !important;
-    }
+.u-checkbox-error {
+  :deep(.q-checkbox__inner) {
+    border-color: #c10015 !important;
   }
 }
 </style>

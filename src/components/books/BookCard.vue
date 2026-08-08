@@ -6,17 +6,17 @@
           <div class="book-title">{{ book.title }}</div>
           <div class="book-author">{{ book.author }}</div>
           <div class="book-notes-badge">
-            <UIcon name="description" size="12px" />
+            <q-icon name="description" size="12px" />
             {{ book.notes.length }}
           </div>
         </div>
       </div>
     </div>
 
-    <q-tooltip v-if="book.notes.length > 0" anchor="top middle" self="bottom middle" :offset="[0, 10]" class="modern-tooltip">
-      <div class="text-weight-medium text-white q-mb-sm">📝 Заметки ({{ book.notes.length }})</div>
+    <q-tooltip v-if="book.notes.length > 0" anchor="top middle" self="bottom middle" :offset="[0, 10]">
+      <div class="text-weight-medium q-mb-sm">📝 Заметки ({{ book.notes.length }})</div>
       <div v-for="(note, idx) in book.notes" :key="idx" class="note-tooltip-item">
-        <UIcon name="bookmark" color="#E05F0A" size="12px" class="q-mr-xs" />
+        <q-icon name="bookmark" color="orange" size="12px" class="q-mr-xs" />
         {{ note }}
       </div>
     </q-tooltip>
@@ -24,8 +24,6 @@
 </template>
 
 <script setup>
-import { UIcon } from 'src/components/ui'
-
 const props = defineProps({
   book: {
     type: Object,
@@ -46,16 +44,15 @@ const handleClick = () => {
 .book-wrapper {
   cursor: pointer;
   animation: bookAppear 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s ease;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   position: relative;
   width: 100%;
-  max-width: $book-max-width;
+  max-width: 180px;
   justify-self: center;
 
   &:hover {
-    transform: translateY(-18px) scale(1.05);
+    transform: translateY(-8px) scale(1.02);
     z-index: 10;
-    filter: drop-shadow(0 15px 40px rgba($primary-orange, 0.4));
   }
 
   @for $i from 1 through 12 {
@@ -78,19 +75,19 @@ const handleClick = () => {
   border-radius: 3px 6px 6px 3px;
   background-size: cover;
   background-position: center;
-  box-shadow: $shadow-book;
+  box-shadow: -4px 6px 20px rgba(0, 0, 0, 0.3);
   transform: rotateY(-1deg);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   overflow: hidden;
   background-color: #2a1c14;
 
   &:not([style*="url"]) {
-    background: linear-gradient(135deg, #2a1c14 0%, $bg-dark-end 100%);
+    background: linear-gradient(135deg, #2a1c14 0%, #1a100a 100%);
   }
 
   .book-wrapper:hover & {
-    transform: rotateY(-5deg) scale(1.02);
-    box-shadow: -8px 12px 35px rgba(0, 0, 0, 0.8), -3px 5px 15px rgba($primary-orange, 0.25);
+    transform: rotateY(-3deg) scale(1.02);
+    box-shadow: -8px 12px 35px rgba(0, 0, 0, 0.5);
   }
 }
 
@@ -114,9 +111,9 @@ const handleClick = () => {
 }
 
 .book-title {
-  color: $text-primary;
   font-size: 16px;
   font-weight: 600;
+  color: #FFFFFF;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
   line-height: 1.3;
   display: -webkit-box;
@@ -125,9 +122,9 @@ const handleClick = () => {
 }
 
 .book-author {
-  color: rgba($text-primary, 0.9);
   font-size: 14px;
   font-weight: 400;
+  color: rgba(255, 255, 255, 0.7);
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9);
   margin-top: 6px;
   white-space: nowrap;
@@ -140,7 +137,7 @@ const handleClick = () => {
   top: 12px;
   right: 12px;
   background: rgba(0, 0, 0, 0.85);
-  color: $text-primary;
+  color: #FFFFFF;
   padding: 4px 12px;
   border-radius: 14px;
   font-size: 12px;
@@ -149,19 +146,8 @@ const handleClick = () => {
   align-items: center;
   gap: 4px;
   backdrop-filter: blur(4px);
-  border: 1px solid rgba($primary-orange, 0.125);
+  border: 1px solid rgba(196, 81, 0, 0.2);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-}
-
-.modern-tooltip {
-  background: rgba($bg-dark-start, 0.95) !important;
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba($primary-orange, 0.5) !important;
-  border-radius: $radius-sm !important;
-  padding: 12px 16px;
-  max-width: 280px;
-  color: $text-primary;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.9);
 }
 
 .note-tooltip-item {
@@ -169,13 +155,44 @@ const handleClick = () => {
   font-size: 12px;
   font-weight: 300;
   line-height: 1.4;
-  border-bottom: 1px solid rgba($text-primary, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
   align-items: flex-start;
-  color: rgba($text-primary, 0.8);
+  color: rgba(255, 255, 255, 0.7);
 
   &:last-child {
     border-bottom: none;
+  }
+}
+
+// Светлая тема для BookCard
+body.body--light {
+  .book {
+    background-color: #f0e8e0;
+    box-shadow: -4px 6px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  .book-overlay {
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0.6) 100%);
+  }
+
+  .book-title {
+    color: #1A1410;
+  }
+
+  .book-author {
+    color: rgba(26, 20, 16, 0.7);
+  }
+
+  .book-notes-badge {
+    background: rgba(255, 255, 255, 0.9);
+    color: #1A1410;
+    border: 1px solid rgba(196, 81, 0, 0.2);
+  }
+
+  .note-tooltip-item {
+    color: rgba(26, 20, 16, 0.7);
+    border-bottom-color: rgba(26, 20, 16, 0.1);
   }
 }
 
@@ -272,6 +289,18 @@ const handleClick = () => {
     padding: 2px 6px;
     top: 8px;
     right: 8px;
+  }
+}
+
+@keyframes bookAppear {
+  0% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.9);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
 }
 </style>

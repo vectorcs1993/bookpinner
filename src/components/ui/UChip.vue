@@ -1,6 +1,6 @@
 <template>
   <q-chip :label="label" :icon="icon" :color="color" :text-color="textColor" :size="size" :dense="dense" :removable="removable" :clickable="clickable"
-    :disable="disable" :class="['u-chip', `u-chip-${variant}`]" @update:model-value="handleRemove" @click="handleClick" v-bind="$attrs">
+    :disable="disable" :class="['u-chip', chipClass]" @update:model-value="handleRemove" @click="handleClick" v-bind="$attrs">
     <template v-if="$slots.default" #default>
       <slot />
     </template>
@@ -30,6 +30,11 @@ const props = defineProps({
 
 const emit = defineEmits(['remove', 'click'])
 
+const chipClass = {
+  'u-chip-outline': props.variant === 'outline',
+  'u-chip-glow': props.variant === 'glow',
+}
+
 const handleRemove = () => {
   emit('remove')
 }
@@ -42,28 +47,14 @@ const handleClick = (event) => {
 </script>
 
 <style scoped lang="scss">
-@import 'src/css/quasar.variables.scss';
-
 .u-chip {
-  transition: all 0.3s ease;
-
-  &-default {
-    background: rgba($primary-orange, 0.15) !important;
-    color: $text-primary !important;
-    border: 1px solid rgba($primary-orange, 0.2) !important;
-  }
-
   &-outline {
     background: transparent !important;
-    color: $primary-orange-light !important;
-    border: 1px solid $border-color !important;
+    border: 1px solid currentColor !important;
   }
 
   &-glow {
-    background: rgba($primary-orange, 0.2) !important;
-    color: $text-primary !important;
-    border: 1px solid rgba($primary-orange, 0.3) !important;
-    box-shadow: 0 0 20px rgba($primary-orange, 0.1) !important;
+    box-shadow: 0 0 20px rgba(196, 81, 0, 0.1) !important;
   }
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="u-spinner-wrapper" :class="{ 'u-spinner-overlay': overlay }">
-    <q-spinner :color="color" :size="size" :class="['u-spinner', `u-spinner-${variant}`]" v-bind="$attrs" />
+    <q-spinner :color="color" :size="size" v-bind="$attrs" />
     <span v-if="text" class="u-spinner-text">{{ text }}</span>
   </div>
 </template>
@@ -20,8 +20,6 @@ const props = defineProps({
 </script>
 
 <style scoped lang="scss">
-@import 'src/css/quasar.variables.scss';
-
 .u-spinner-wrapper {
   display: flex;
   flex-direction: column;
@@ -34,7 +32,7 @@ const props = defineProps({
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba($bg-dark-start, 0.8);
+    background: rgba(0, 0, 0, 0.8);
     backdrop-filter: blur(4px);
     z-index: 9999;
   }
@@ -42,7 +40,7 @@ const props = defineProps({
 
 .u-spinner-text {
   margin-top: 12px;
-  color: $text-muted;
   font-size: 14px;
+  opacity: 0.7;
 }
 </style>

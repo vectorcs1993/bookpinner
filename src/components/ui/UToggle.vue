@@ -1,6 +1,6 @@
 <template>
   <q-toggle v-model="localValue" :label="label" :color="color" :dark="dark" :disable="disabled" :dense="dense" :size="size"
-    :class="['u-toggle', { 'u-toggle-error': error }]" @update:model-value="handleUpdate" v-bind="$attrs">
+    :class="{ 'u-toggle-error': error }" v-bind="$attrs" @update:model-value="handleUpdate">
     <template v-if="$slots.default" #default>
       <slot />
     </template>
@@ -40,25 +40,9 @@ const handleUpdate = (value) => {
 </script>
 
 <style scoped lang="scss">
-@import 'src/css/quasar.variables.scss';
-
-.u-toggle {
-  :deep(.q-toggle__label) {
-    color: $text-primary;
-  }
-
-  :deep(.q-toggle__track) {
-    background: rgba($text-primary, 0.2);
-  }
-
-  :deep(.q-toggle__thumb) {
-    color: $text-primary;
-  }
-
-  &-error {
-    :deep(.q-toggle__inner) {
-      border-color: $negative !important;
-    }
+.u-toggle-error {
+  :deep(.q-toggle__inner) {
+    border-color: #c10015 !important;
   }
 }
 </style>

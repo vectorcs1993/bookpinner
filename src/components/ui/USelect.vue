@@ -1,8 +1,8 @@
 <template>
   <q-select v-model="localValue" :options="options" :label="label" :placeholder="placeholder" :dense="dense" :outlined="variant === 'outlined'"
     :filled="variant === 'filled'" :dark="dark" :clearable="clearable" :disable="disabled" :loading="loading" :error="error"
-    :error-message="errorMessage" :multiple="multiple" :use-chips="multiple" :popup-content-class="'u-select-popup'" :menu-class="'u-select-menu'"
-    :class="['u-select', `u-select-${variant}`]" @update:model-value="handleUpdate" v-bind="$attrs">
+    :error-message="errorMessage" :multiple="multiple" :use-chips="multiple" :popup-content-class="'u-select-popup'" v-bind="$attrs"
+    @update:model-value="handleUpdate">
     <template v-if="$slots.prepend" #prepend>
       <slot name="prepend" />
     </template>
@@ -67,85 +67,3 @@ const handleUpdate = (value) => {
   emit('change', value)
 }
 </script>
-
-<style scoped lang="scss">
-@import 'src/css/quasar.variables.scss';
-
-.u-select {
-  :deep(.q-field__control) {
-    background: $bg-card !important;
-    border: 1px solid $border-color !important;
-    border-radius: $radius-md !important;
-    transition: all 0.3s ease !important;
-    color: $text-primary !important;
-    min-height: 40px !important;
-
-    &:hover {
-      border-color: $border-color-hover !important;
-      background: $bg-card-hover !important;
-    }
-
-    &:focus-within {
-      border-color: $primary-orange !important;
-      box-shadow: 0 0 0 3px rgba($primary-orange, 0.1) !important;
-    }
-  }
-
-  :deep(.q-field__native) {
-    color: $text-primary !important;
-    min-height: 38px !important;
-  }
-
-  :deep(.q-field__label) {
-    color: $text-muted !important;
-  }
-
-  :deep(.q-field__marginal) {
-    color: $text-muted !important;
-  }
-
-  &-filled {
-    :deep(.q-field__control) {
-      background: rgba($bg-card, 0.8) !important;
-    }
-  }
-}
-
-:global(.u-select-popup),
-:global(.u-select-menu) {
-  background: $bg-dark-end !important;
-  border: 1px solid $border-color !important;
-  border-radius: $radius-md !important;
-  box-shadow: $shadow-card !important;
-
-  .q-item {
-    color: $text-primary !important;
-    padding: 8px 16px !important;
-    min-height: 36px !important;
-
-    &:hover {
-      background: rgba($primary-orange, 0.15) !important;
-    }
-
-    &.q-manual-focusable--focused {
-      background: rgba($primary-orange, 0.25) !important;
-    }
-
-    &.q-item--active {
-      background: rgba($primary-orange, 0.2) !important;
-    }
-  }
-
-  .q-item__section--main {
-    .q-item__label {
-      color: $text-primary !important;
-    }
-  }
-
-  .q-item__section--side {
-    .q-icon {
-      color: $primary-orange-light !important;
-    }
-  }
-}
-</style>

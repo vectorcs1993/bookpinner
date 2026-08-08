@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="lHh Lpr lFf" class="modern-library-theme">
+  <q-layout view="lHh Lpr lFf" class="main-layout">
     <AppDrawer v-model="leftDrawerOpen" />
 
     <q-page-container>
@@ -20,10 +20,7 @@ const toggleDrawer = () => {
 </script>
 
 <style scoped lang="scss">
-@import 'src/css/quasar.variables.scss';
-
-.modern-library-theme {
-  background: linear-gradient(180deg, $bg-dark-start 0%, $bg-dark-end 100%) fixed !important;
+.main-layout {
   min-height: 100vh;
 }
 </style>

@@ -19,6 +19,7 @@ $primary-orange: #C45100;
 $primary-orange-light: #E05F0A;
 $primary-orange-dark: #8C3800;
 
+// Темная тема
 $bg-dark-start: #0B0A09;
 $bg-dark-end: #1F1510;
 $bg-card: rgba(31, 21, 16, 0.6);
@@ -30,6 +31,19 @@ $text-muted: rgba(255, 255, 255, 0.5);
 
 $border-color: rgba(196, 81, 0, 0.15);
 $border-color-hover: rgba(196, 81, 0, 0.3);
+
+// Светлая тема
+$bg-light-start: #F5F0ED;
+$bg-light-end: #E8DCD5;
+$bg-card-light: rgba(255, 255, 255, 0.85);
+$bg-card-hover-light: rgba(255, 255, 255, 0.95);
+
+$text-primary-light: #1A1410;
+$text-secondary-light: rgba(26, 20, 16, 0.7);
+$text-muted-light: rgba(26, 20, 16, 0.5);
+
+$border-color-light: rgba(196, 81, 0, 0.1);
+$border-color-hover-light: rgba(196, 81, 0, 0.25);
 
 // Размеры
 $drawer-width: 280px;
