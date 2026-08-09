@@ -14,8 +14,8 @@ const routes = [
         component: () => import('src/pages/ShelvesPage.vue'),
       },
       {
-        path: 'tracker',
-        component: () => import('src/pages/TrackerPage.vue'),
+        path: 'statistics',
+        component: () => import('src/pages/StatisticsPage.vue'),
       },
     ],
   },

@@ -1,58 +1,54 @@
 <template>
-  <q-dialog v-model="dialogVisible" class="preview-dialog">
-    <q-card v-if="book" class="antique-card">
-      <q-card-section class="row items-center q-pb-none">
-        <div class="text-h5 text-white" style="font-weight: 300;">{{ book.title }}</div>
-        <q-space />
-        <UButton icon="close" variant="ghost" shape="round" size="sm" @click="dialogVisible = false" />
-      </q-card-section>
-
-      <q-card-section class="row q-col-gutter-md">
-        <div class="col-12 col-sm-4">
+  <UDialog v-model="dialogVisible" :title="book?.title" :persistent="false" dialog-class="preview-dialog">
+    <div v-if="book" class="preview-content">
+      <div class="row q-col-gutter-lg">
+        <div class="col-12 col-sm-5 col-md-4">
           <q-img :src="book.coverUrl || defaultCover" :ratio="5 / 7" fit="cover" class="rounded-borders antique-img" />
         </div>
 
-        <div class="col-12 col-sm-8">
-          <div class="text-subtitle1 text-white q-mb-md">
+        <div class="col-12 col-sm-7 col-md-8">
+          <div class="text-h6 q-mb-md">
             <strong>Автор:</strong> {{ book.author }}
           </div>
 
-          <q-separator :style="{ backgroundColor: 'rgba(196, 81, 0, 0.4)' }" class="q-mb-md" />
+          <q-separator class="q-mb-md" />
 
-          <div class="row items-center q-mb-sm">
-            <div class="text-subtitle1 text-white" style="font-weight: 300;">📝 Заметки</div>
-            <q-space />
-            <UButton icon="add" size="sm" shape="round" @click="addNote" />
-          </div>
-
-          <q-input v-model="newNoteText" label="Текст заметки" outlined dense dark class="q-mb-md modern-input" @keyup.enter="addNote" />
-
-          <div v-if="book.notes.length === 0" class="empty-state text-center" style="color: rgba(255,255,255,0.5)">
-            Нет заметок для этой книги
-          </div>
-
-          <div v-for="(note, index) in book.notes" :key="index" class="note-item row items-center">
-            <div class="col text-white">
-              <q-icon name="bookmark" color="primary" size="16px" class="q-mr-sm" />
-              {{ note }}
+          <div class="notes-section">
+            <div class="row items-center q-mb-sm">
+              <div class="text-subtitle1" style="font-weight: 300;">📝 Заметки</div>
+              <q-space />
+              <UButton icon="add" variant="primary" shape="round" size="sm" @click="addNote" />
             </div>
-            <div>
-              <UButton icon="delete" variant="ghost" size="sm" shape="round" @click="deleteNote(index)" />
+
+            <UInput v-model="newNoteText" label="Текст заметки" dense class="q-mb-md" @keyup.enter="addNote" />
+
+            <div v-if="book.notes.length === 0" class="empty-state text-center">
+              Нет заметок для этой книги
+            </div>
+
+            <div v-for="(note, index) in book.notes" :key="index" class="note-item row items-center">
+              <div class="col text-white">
+                <q-icon name="bookmark" color="primary" size="16px" class="q-mr-sm" />
+                {{ note }}
+              </div>
+              <div>
+                <UButton icon="delete" variant="ghost" shape="round" size="sm" color="negative" @click="deleteNote(index)" />
+              </div>
             </div>
           </div>
         </div>
-      </q-card-section>
+      </div>
+    </div>
 
-      <q-card-actions align="right" class="q-pa-md">
-        <UButton label="Закрыть" shape="round" variant="primary" @click="dialogVisible = false" />
-      </q-card-actions>
-    </q-card>
-  </q-dialog>
+    <template #actions>
+      <UButton label="Закрыть" icon="close" variant="primary" @click="dialogVisible = false" />
+    </template>
+  </UDialog>
 </template>
 
 <script setup>
 import { ref, computed, watch } from 'vue'
-import { UButton } from 'src/components/ui'
+import { UDialog, UButton, UInput } from 'src/components/ui'
 
 const props = defineProps({
   modelValue: {
@@ -97,8 +93,36 @@ watch(() => props.modelValue, (newVal) => {
 @import 'src/css/quasar.variables.scss';
 
 .preview-dialog {
-  :deep(.q-dialog__inner) {
-    min-width: 400px;
+  :deep(.u-dialog-card) {
+    min-height: 400px;
+    max-height: 85vh;
+    background: linear-gradient(145deg, #1a100a, #2a1c14) !important;
+  }
+
+  :deep(.u-dialog-body) {
+    max-height: 60vh;
+    overflow-y: auto;
+  }
+}
+
+body.body--light .preview-dialog {
+  :deep(.u-dialog-card) {
+    background: linear-gradient(145deg, #e8dcd5, #f5f0ed) !important;
+  }
+}
+
+.notes-section {
+  max-height: 40vh;
+  overflow-y: auto;
+  padding-right: 4px;
+
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $primary;
+    border-radius: 2px;
   }
 }
 
@@ -118,8 +142,9 @@ watch(() => props.modelValue, (newVal) => {
 .empty-state {
   opacity: 0.6;
   font-style: italic;
-  padding: 20px;
+  padding: 30px 20px;
   color: $text-muted;
+  text-align: center;
 }
 
 body.body--light .note-item {
@@ -127,14 +152,6 @@ body.body--light .note-item {
 
   &:hover {
     background: $bg-card-hover-light;
-  }
-}
-
-@media (max-width: 768px) {
-  .preview-dialog {
-    :deep(.q-dialog__inner) {
-      min-width: 320px;
-    }
   }
 }
 </style>

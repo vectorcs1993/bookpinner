@@ -1,8 +1,7 @@
 <template>
-  <q-btn :label="label" :icon="icon" :loading="loading" :disabled="disabled" :color="color || 'primary'"
-    :flat="variant === 'flat' || variant === 'ghost'" :outline="variant === 'outline'" :dense="size === 'sm'"
-    :size="size === 'sm' ? 'sm' : size === 'lg' ? 'lg' : 'md'" :rounded="rounded" :square="square" :class="['u-btn', { 'u-btn-full': fullWidth }]"
-    v-bind="$attrs" @click="handleClick">
+  <q-btn :label="label" :icon="icon" :loading="loading" :disabled="disabled" :color="computedColor" :flat="variant === 'flat' || variant === 'ghost'"
+    :outline="variant === 'outline'" :dense="size === 'sm'" :size="computedSize" :rounded="rounded" :square="square"
+    :class="['u-btn', { 'u-btn-full': fullWidth, 'u-btn-shape-round': shape === 'round' }]" v-bind="$attrs" @click="handleClick">
     <template v-if="$slots.prepend" #prepend>
       <slot name="prepend" />
     </template>
@@ -14,6 +13,8 @@
 </template>
 
 <script setup>
+import { computed } from 'vue'
+
 const props = defineProps({
   label: { type: String, default: '' },
   icon: { type: String, default: '' },
@@ -27,15 +28,33 @@ const props = defineProps({
     default: 'md',
     validator: (v) => ['sm', 'md', 'lg'].includes(v),
   },
-  rounded: { type: Boolean, default: true }, // По умолчанию скругленные
+  rounded: { type: Boolean, default: true },
   square: { type: Boolean, default: false },
-  color: { type: String, default: 'primary' },
+  shape: {
+    type: String,
+    default: 'default',
+    validator: (v) => ['default', 'round'].includes(v),
+  },
+  color: { type: String, default: '' },
   loading: { type: Boolean, default: false },
   disabled: { type: Boolean, default: false },
   fullWidth: { type: Boolean, default: false },
 })
 
 const emit = defineEmits(['click'])
+
+const computedColor = computed(() => {
+  if (props.color) return props.color
+  if (props.variant === 'primary') return 'primary'
+  if (props.variant === 'secondary') return 'secondary'
+  return ''
+})
+
+const computedSize = computed(() => {
+  if (props.size === 'sm') return 'sm'
+  if (props.size === 'lg') return 'lg'
+  return 'md'
+})
 
 const handleClick = (event) => {
   if (!props.disabled && !props.loading) {
@@ -51,6 +70,26 @@ const handleClick = (event) => {
 
   &-full {
     width: 100%;
+  }
+
+  &-shape-round {
+    border-radius: 50% !important;
+    min-width: 40px !important;
+    padding: 0 !important;
+    width: 40px;
+    height: 40px;
+
+    &.size-sm {
+      min-width: 32px !important;
+      width: 32px;
+      height: 32px;
+    }
+
+    &.size-lg {
+      min-width: 48px !important;
+      width: 48px;
+      height: 48px;
+    }
   }
 }
 </style>

@@ -1,8 +1,7 @@
 <template>
   <div class="bookshelf-wrapper">
     <div v-if="loading" class="text-center q-py-lg">
-      <q-spinner color="primary" size="3em" />
-      <div class="q-mt-sm">Загрузка каталога...</div>
+      <USpinner size="3em" text="Загрузка каталога..." />
     </div>
 
     <div v-else class="shelves-container">
@@ -29,6 +28,7 @@
 <script setup>
 import { ref, computed, onMounted, onBeforeUnmount, nextTick } from 'vue'
 import BookCard from './BookCard.vue'
+import { USpinner } from 'src/components/ui'
 
 const props = defineProps({
   books: {

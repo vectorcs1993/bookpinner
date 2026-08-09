@@ -5,10 +5,7 @@
         <div class="book-overlay">
           <div class="book-title">{{ book.title }}</div>
           <div class="book-author">{{ book.author }}</div>
-          <div class="book-notes-badge">
-            <q-icon name="description" size="12px" />
-            {{ book.notes.length }}
-          </div>
+          <UBadge v-if="book.notes.length > 0" :label="book.notes.length" icon="description" variant="glow" class="book-notes-badge" />
         </div>
       </div>
     </div>
@@ -25,6 +22,7 @@
 
 <script setup>
 import { useQuasar } from 'quasar'
+import { UBadge } from 'src/components/ui'
 
 const props = defineProps({
   book: {
@@ -139,18 +137,6 @@ const handleClick = () => {
   position: absolute;
   top: 12px;
   right: 12px;
-  background: rgba(0, 0, 0, 0.85);
-  color: #FFFFFF;
-  padding: 4px 12px;
-  border-radius: 14px;
-  font-size: 12px;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  backdrop-filter: blur(4px);
-  border: 1px solid rgba($primary, 0.2);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
 }
 
 .note-tooltip-item {
@@ -185,12 +171,6 @@ body.body--light {
 
   .book-author {
     color: $text-secondary-light;
-  }
-
-  .book-notes-badge {
-    background: rgba(255, 255, 255, 0.9);
-    color: $text-primary-light;
-    border: 1px solid rgba($primary, 0.2);
   }
 
   .note-tooltip-item {
@@ -260,11 +240,6 @@ body.body--light {
     font-size: 10px;
   }
 
-  .book-notes-badge {
-    font-size: 9px;
-    padding: 2px 8px;
-  }
-
   .book-overlay {
     padding: 10px 8px;
   }
@@ -285,13 +260,6 @@ body.body--light {
 
   .book-author {
     font-size: 9px;
-  }
-
-  .book-notes-badge {
-    font-size: 8px;
-    padding: 2px 6px;
-    top: 8px;
-    right: 8px;
   }
 }
 </style>

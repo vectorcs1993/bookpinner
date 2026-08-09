@@ -22,7 +22,7 @@ body.body--light {
   color: $text-primary-light !important;
 }
 
-// Стили для кастомных компонентов
+// Стили для drawer (перенесены в MainLayout)
 .drawer-header {
   padding: 24px 20px 20px;
   display: flex;
@@ -66,40 +66,6 @@ body.body--light .logo-title {
 
 body.body--light .logo-subtitle {
   color: $text-muted-light;
-}
-
-.note-item {
-  display: flex;
-  align-items: center;
-  padding: 10px 14px;
-  margin-bottom: 8px;
-  border-left: 4px solid $primary;
-  border-radius: 0 $radius-sm $radius-sm 0;
-  background: rgba($primary, 0.05);
-  transition: background 0.2s;
-
-  &:hover {
-    background: rgba($primary, 0.1);
-  }
-}
-
-body.body--light .note-item {
-  background: rgba($primary, 0.03);
-  
-  &:hover {
-    background: rgba($primary, 0.08);
-  }
-}
-
-.page-title {
-  font-size: 24px;
-  font-weight: 600;
-  letter-spacing: -0.5px;
-  color: $text-primary;
-}
-
-body.body--light .page-title {
-  color: $text-primary-light;
 }
 
 // Scrollbar

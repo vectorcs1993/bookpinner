@@ -30,7 +30,7 @@
             <q-item-label>{{ themeLabel }}</q-item-label>
           </q-item-section>
           <q-item-section side>
-            <q-toggle :model-value="isDark" color="primary" @update:model-value="toggleTheme" />
+            <UToggle :model-value="isDark" color="primary" @update:model-value="toggleTheme" />
           </q-item-section>
         </q-item>
       </q-list>
@@ -46,7 +46,7 @@
 import { ref, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useThemeStore } from 'src/stores/theme-store'
-import { UButton } from 'src/components/ui'
+import { UButton, UToggle } from 'src/components/ui'
 
 const router = useRouter()
 const route = useRoute()
@@ -61,7 +61,7 @@ const themeLabel = computed(() => themeStore.themeLabel)
 const menuItems = [
   { label: 'Моя библиотека', icon: 'menu_book', route: '/library' },
   { label: 'Мои книжные полки', icon: 'shelves', route: '/shelves' },
-  { label: 'Мой книжный трекер', icon: 'trending_up', route: '/tracker' },
+  { label: 'Статистика', icon: 'trending_up', route: '/statistics' },
 ]
 
 const toggleDrawer = () => {

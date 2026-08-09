@@ -5,7 +5,6 @@
     <template v-if="$slots.default" #default>
       <slot />
     </template>
-    <!-- Добавляем поддержку append слота -->
     <template v-if="$slots.append" #append>
       <slot name="append" />
     </template>

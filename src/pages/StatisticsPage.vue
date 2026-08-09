@@ -1,15 +1,14 @@
 <template>
-  <div class="tracker-page q-pa-md">
+  <div class="statistics-page q-pa-md">
     <div class="row items-center q-mb-md">
       <div class="col">
         <div class="row items-center">
           <UButton icon="menu" variant="ghost" @click="$emit('toggleDrawer')" />
-          <span class="page-title q-ml-sm">Мой книжный трекер</span>
+          <span class="page-title q-ml-sm">Статистика</span>
         </div>
       </div>
     </div>
 
-    <!-- Статистика -->
     <div class="stats-grid q-mb-md">
       <div class="stats-row row q-col-gutter-sm">
         <div class="col-12 col-sm-6 col-md-3">
@@ -54,7 +53,6 @@
       </div>
     </div>
 
-    <!-- График активности (демо) -->
     <div class="filters-panel q-mb-md">
       <div class="text-subtitle1 q-mb-sm">📊 Активность чтения</div>
       <div class="chart-placeholder">
@@ -69,7 +67,6 @@
       </div>
     </div>
 
-    <!-- Топ книг -->
     <div class="filters-panel">
       <div class="text-subtitle1 q-mb-sm">🏆 Топ книг по заметкам</div>
       <div v-if="topBooks.length === 0" class="empty-state text-center">
@@ -86,10 +83,7 @@
             <div class="text-caption" style="opacity: 0.6">{{ book.author }}</div>
           </div>
           <div class="col-auto">
-            <q-chip :color="getColorByIndex(index)" text-color="white" size="sm">
-              <q-icon name="description" size="14px" class="q-mr-xs" />
-              {{ book.notes.length }}
-            </q-chip>
+            <UBadge :label="book.notes.length" color="orange" />
           </div>
         </div>
       </div>
@@ -100,7 +94,7 @@
 <script setup>
 import { computed } from 'vue'
 import { useBooksStore } from 'src/stores/books-store'
-import { UButton } from 'src/components/ui'
+import { UButton, UBadge } from 'src/components/ui'
 
 const booksStore = useBooksStore()
 
@@ -122,7 +116,6 @@ const topBooks = computed(() => {
     .slice(0, 5)
 })
 
-// Демо-данные для графика активности
 const activityData = [
   { label: 'Пн', value: 45 },
   { label: 'Вт', value: 60 },
@@ -132,17 +125,12 @@ const activityData = [
   { label: 'Сб', value: 50 },
   { label: 'Вс', value: 40 },
 ]
-
-const getColorByIndex = (index) => {
-  const colors = ['orange', 'amber', 'deep-orange', 'brown', 'grey']
-  return colors[index % colors.length]
-}
 </script>
 
 <style scoped lang="scss">
 @import 'src/css/quasar.variables.scss';
 
-.tracker-page {
+.statistics-page {
   min-height: 100vh;
 }
 

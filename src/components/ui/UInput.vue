@@ -1,8 +1,8 @@
 <template>
   <q-input v-model="localValue" :label="label" :placeholder="placeholder" :type="type" :dense="dense" :outlined="variant === 'outlined'"
     hide-bottom-space hide-hint :filled="variant === 'filled'" :standout="variant === 'standout'" :rounded="rounded" :clearable="clearable"
-    :loading="loading" :disable="disabled" :error="error" :error-message="errorMessage" v-bind="$attrs" @update:model-value="handleUpdate"
-    @focus="handleFocus" @blur="handleBlur" color="primary">
+    :loading="loading" :disable="disabled" :error="error" :error-message="errorMessage" :dark="dark" v-bind="$attrs"
+    @update:model-value="handleUpdate" @focus="handleFocus" @blur="handleBlur" color="primary">
     <template v-if="$slots.prepend" #prepend>
       <slot name="prepend" />
     </template>
@@ -35,6 +35,7 @@ const props = defineProps({
   disabled: { type: Boolean, default: false },
   error: { type: Boolean, default: false },
   errorMessage: { type: String, default: '' },
+  dark: { type: Boolean, default: null },
 })
 
 const emit = defineEmits(['update:modelValue', 'focus', 'blur', 'change'])

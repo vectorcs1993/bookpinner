@@ -9,7 +9,6 @@
       </div>
     </div>
 
-    <!-- Создание новой полки -->
     <div class="filters-panel q-mb-md">
       <div class="row items-center q-col-gutter-sm">
         <div class="col-12 col-md-4">
@@ -25,23 +24,21 @@
       </div>
     </div>
 
-    <!-- Статистика -->
     <div class="filters-panel q-mb-md">
-      <q-chip color="primary" text-color="white">
-        <q-icon name="shelves" size="18px" class="q-mr-xs" />
-        Всего полок: <strong class="q-ml-xs">{{ shelvesStore.getShelvesCount }}</strong>
-      </q-chip>
-
-      <q-chip color="primary" text-color="white">
-        <q-icon name="menu_book" size="18px" class="q-mr-xs" />
-        Всего книг: <strong class="q-ml-xs">{{ totalBooksInShelves }}</strong>
-      </q-chip>
+      <div class="row q-gutter-sm">
+        <UChip color="primary" text-color="white">
+          <q-icon name="shelves" size="18px" class="q-mr-xs" />
+          Всего полок: <strong class="q-ml-xs">{{ shelvesStore.getShelvesCount }}</strong>
+        </UChip>
+        <UChip color="primary" text-color="white">
+          <q-icon name="menu_book" size="18px" class="q-mr-xs" />
+          Всего книг: <strong class="q-ml-xs">{{ totalBooksInShelves }}</strong>
+        </UChip>
+      </div>
     </div>
 
-    <!-- Полки -->
     <div v-if="shelvesStore.loading" class="text-center q-py-lg">
-      <q-spinner color="primary" size="3em" />
-      <div class="q-mt-sm">Загрузка полок...</div>
+      <USpinner size="3em" text="Загрузка полок..." />
     </div>
 
     <div v-else-if="shelvesStore.getShelves.length === 0" class="text-center q-py-lg">
@@ -86,7 +83,6 @@
       </div>
     </div>
 
-    <!-- Диалог просмотра полки -->
     <UDialog v-model="shelfDialogVisible" :title="`📚 ${selectedShelf?.name || ''}`">
       <div v-if="selectedShelf" class="shelf-dialog-content">
         <div class="row items-center q-mb-md">
@@ -121,10 +117,10 @@
       </template>
     </UDialog>
 
-    <!-- Диалог добавления книги на полку -->
     <UDialog v-model="showAddToShelf" title="📖 Добавить книгу на полку">
       <div class="add-to-shelf-form">
-        <USelect v-model="selectedBookForShelf" :options="availableBooksOptions" label="Выберите книгу" dense placeholder="Книга..." />
+        <USelect v-model="selectedBookForShelf" :options="availableBooksOptions" label="Выберите книгу" dense placeholder="Книга..." emit-value
+          map-options />
       </div>
 
       <template #actions>
@@ -139,7 +135,7 @@
 import { ref, computed } from 'vue'
 import { useShelvesStore } from 'src/stores/shelves-store'
 import { useBooksStore } from 'src/stores/books-store'
-import { UButton, UDialog, UInput, USelect } from 'src/components/ui'
+import { UButton, UDialog, UInput, USelect, UChip, USpinner } from 'src/components/ui'
 import { useQuasar } from 'quasar'
 
 const $q = useQuasar()

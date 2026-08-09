@@ -2,7 +2,7 @@
   <q-select v-model="localValue" :options="options" :label="label" :placeholder="placeholder" :dense="dense" :outlined="variant === 'outlined'"
     :filled="variant === 'filled'" :dark="dark" :clearable="clearable" :disable="disabled" :loading="loading" :error="error"
     :error-message="errorMessage" :multiple="multiple" :use-chips="multiple" :popup-content-class="'u-select-popup'" v-bind="$attrs"
-    @update:model-value="handleUpdate" color="primary">
+    @update:model-value="handleUpdate" color="primary" :emit-value="emitValue" :map-options="mapOptions">
     <template v-if="$slots.prepend" #prepend>
       <slot name="prepend" />
     </template>
@@ -41,13 +41,15 @@ const props = defineProps({
     validator: (v) => ['outlined', 'filled'].includes(v),
   },
   dense: { type: Boolean, default: false },
-  dark: { type: Boolean, default: true },
+  dark: { type: Boolean, default: null },
   clearable: { type: Boolean, default: false },
   loading: { type: Boolean, default: false },
   disabled: { type: Boolean, default: false },
   error: { type: Boolean, default: false },
   errorMessage: { type: String, default: '' },
   multiple: { type: Boolean, default: false },
+  emitValue: { type: Boolean, default: false },
+  mapOptions: { type: Boolean, default: false },
 })
 
 const emit = defineEmits(['update:modelValue', 'change'])
