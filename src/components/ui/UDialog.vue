@@ -8,7 +8,7 @@
             <slot name="title">{{ title }}</slot>
           </div>
           <q-space />
-          <UButton v-if="!persistent" icon="close" variant="ghost" shape="round" size="sm" :dark="dark" @click="close" />
+          <UButton v-if="!persistent" icon="close" flat round size="sm" :dark="dark" @click="close" />
         </div>
       </q-card-section>
 

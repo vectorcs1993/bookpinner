@@ -1,9 +1,10 @@
 <template>
-  <UDialog v-model="dialogVisible" title="📖 Добавить книгу">
+  <UDialog v-model="dialogVisible" title="Добавить книгу" :dark="$q.dark.isActive">
     <div class="add-book-form">
-      <UInput v-model="form.title" label="Название *" dense class="q-mb-md" />
-      <UInput v-model="form.author" label="Автор *" dense class="q-mb-md" />
-      <UInput v-model="form.coverUrl" label="URL обложки" dense class="q-mb-md" placeholder="https://example.com/cover.jpg" />
+      <UInput v-model="form.title" label="Название *" dense class="q-mb-md" :dark="$q.dark.isActive" />
+      <UInput v-model="form.author" label="Автор *" dense class="q-mb-md" :dark="$q.dark.isActive" />
+      <UInput v-model="form.coverUrl" label="URL обложки" dense class="q-mb-md" placeholder="https://example.com/cover.jpg"
+        :dark="$q.dark.isActive" />
 
       <div v-if="form.coverUrl" class="cover-preview">
         <q-img :src="form.coverUrl" :ratio="5 / 7" fit="cover" style="max-width: 120px; border-radius: 8px;" />
@@ -11,15 +12,18 @@
     </div>
 
     <template #actions>
-      <UButton label="Отмена" icon="close" variant="ghost" shape="round" @click="dialogVisible = false" />
-      <UButton label="Добавить книгу" icon="add" variant="primary" shape="round" :disabled="!form.title || !form.author" @click="submit" />
+      <UButton label="Отмена" icon="close" flat round @click="dialogVisible = false" />
+      <UButton label="Добавить книгу" icon="add" color="primary" round :disabled="!form.title || !form.author" @click="submit" />
     </template>
   </UDialog>
 </template>
 
 <script setup>
 import { reactive, computed } from 'vue'
+import { useQuasar } from 'quasar'
 import { UDialog, UInput, UButton } from 'src/components/ui'
+
+const $q = useQuasar()
 
 const props = defineProps({
   modelValue: {

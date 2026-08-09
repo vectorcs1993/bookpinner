@@ -1,8 +1,8 @@
 <template>
-  <q-input v-model="localValue" :label="label" :placeholder="placeholder" :type="type" :dense="dense" :outlined="variant === 'outlined'"
-    hide-bottom-space hide-hint :filled="variant === 'filled'" :standout="variant === 'standout'" :rounded="rounded" :clearable="clearable"
-    :loading="loading" :disable="disabled" :error="error" :error-message="errorMessage" :dark="dark" v-bind="$attrs"
-    @update:model-value="handleUpdate" @focus="handleFocus" @blur="handleBlur" color="primary">
+  <q-input v-model="localValue" :label="label" :placeholder="placeholder" :type="type" :dense="dense" :outlined="variant === 'outlined'" hide-hint
+    :filled="variant === 'filled'" :standout="variant === 'standout'" :rounded="rounded" :clearable="clearable" :loading="loading" :disable="disabled"
+    :error="error" :error-message="errorMessage" :dark="dark" v-bind="$attrs" @update:model-value="handleUpdate" @focus="handleFocus"
+    @blur="handleBlur" color="primary">
     <template v-if="$slots.prepend" #prepend>
       <slot name="prepend" />
     </template>

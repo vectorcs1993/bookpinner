@@ -10,8 +10,7 @@
           </UInput>
         </div>
         <div class="col-12 col-md-auto">
-          <UButton label="Создать полку" icon="add" variant="primary" :dark="$q.dark.isActive" :disabled="!newShelfName.trim()"
-            @click="createShelf" />
+          <UButton label="Создать полку" icon="add" color="primary" rounded :disabled="!newShelfName.trim()" @click="createShelf" />
         </div>
       </div>
     </div>
@@ -57,7 +56,7 @@
                   </span>
                 </div>
               </div>
-              <UButton icon="delete" variant="ghost" size="sm" :dark="$q.dark.isActive" @click.stop="deleteShelf(shelf.id)" />
+              <UButton icon="delete" color="primary" size="sm" rounded @click.stop="deleteShelf(shelf.id)" />
             </div>
           </q-card-section>
 
@@ -81,7 +80,7 @@
           <div class="col">
             <div class="text-subtitle1">Книги на полке: {{ selectedShelf.books.length }}</div>
           </div>
-          <UButton label="Добавить книгу" icon="add" variant="primary" size="sm" :dark="$q.dark.isActive" @click="showAddToShelf = true" />
+          <UButton label="Добавить книгу" icon="add" color="primary" rounded size="sm" @click="showAddToShelf = true" />
         </div>
 
         <div v-if="selectedShelf.books.length === 0" class="empty-state text-center">
@@ -98,26 +97,26 @@
               <div class="text-caption" style="opacity: 0.6">{{ book.author }}</div>
             </div>
             <div>
-              <UButton icon="close" variant="ghost" size="sm" :dark="$q.dark.isActive" @click="removeBookFromShelf(book.id)" />
+              <UButton icon="close" flat size="sm" rounded @click="removeBookFromShelf(book.id)" />
             </div>
           </div>
         </div>
       </div>
 
       <template #actions>
-        <UButton label="Закрыть" variant="secondary" :dark="$q.dark.isActive" @click="shelfDialogVisible = false" />
+        <UButton label="Закрыть" color="negative" rounded @click="shelfDialogVisible = false" />
       </template>
     </UDialog>
 
-    <UDialog v-model="showAddToShelf" title="📖 Добавить книгу на полку" :dark="$q.dark.isActive">
+    <UDialog v-model="showAddToShelf" title="Добавить книгу на полку" :dark="$q.dark.isActive">
       <div class="add-to-shelf-form">
         <USelect v-model="selectedBookForShelf" :options="availableBooksOptions" label="Выберите книгу" dense placeholder="Книга..." emit-value
           map-options :dark="$q.dark.isActive" />
       </div>
 
       <template #actions>
-        <UButton label="Отмена" variant="ghost" :dark="$q.dark.isActive" @click="showAddToShelf = false" />
-        <UButton label="Добавить" variant="primary" :dark="$q.dark.isActive" :disabled="!selectedBookForShelf" @click="addBookToShelf" />
+        <UButton label="Отмена" color="ghost" rounded @click="showAddToShelf = false" />
+        <UButton label="Добавить" color="primary" rounded :disabled="!selectedBookForShelf" @click="addBookToShelf" />
       </template>
     </UDialog>
   </div>

@@ -7,7 +7,7 @@
         </div>
 
         <div class="col-12 col-sm-7 col-md-8">
-          <div class="text-h6 q-mb-md">
+          <div class="text-h6 q-mb-md" :class="$q.dark.isActive ? 'text-white' : 'text-dark'">
             <strong>Автор:</strong> {{ book.author }}
           </div>
 
@@ -15,24 +15,26 @@
 
           <div class="notes-section">
             <div class="row items-center q-mb-sm">
-              <div class="text-subtitle1" style="font-weight: 300;">📝 Заметки</div>
+              <div class="text-subtitle1" style="font-weight: 300;" :class="$q.dark.isActive ? 'text-white' : 'text-dark'">
+                📝 Заметки
+              </div>
               <q-space />
-              <UButton icon="add" variant="primary" shape="round" size="sm" :dark="$q.dark.isActive" @click="addNote" />
+              <UButton icon="add" variant="primary" shape="round" size="sm" @click="addNote" />
             </div>
 
             <UInput v-model="newNoteText" label="Текст заметки" dense class="q-mb-md" :dark="$q.dark.isActive" @keyup.enter="addNote" />
 
-            <div v-if="book.notes.length === 0" class="empty-state text-center">
+            <div v-if="!book.notes || book.notes.length === 0" class="empty-state text-center">
               Нет заметок для этой книги
             </div>
 
             <div v-for="(note, index) in book.notes" :key="index" class="note-item row items-center">
-              <div class="col">
+              <div class="col note-text">
                 <q-icon name="bookmark" color="primary" size="16px" class="q-mr-sm" />
                 {{ note }}
               </div>
               <div>
-                <UButton icon="delete" variant="ghost" shape="round" size="sm" color="negative" :dark="$q.dark.isActive" @click="deleteNote(index)" />
+                <UButton icon="delete" variant="ghost" shape="round" size="sm" color="negative" @click="deleteNote(index)" />
               </div>
             </div>
           </div>
@@ -41,7 +43,7 @@
     </div>
 
     <template #actions>
-      <UButton label="Закрыть" icon="close" variant="primary" :dark="$q.dark.isActive" @click="dialogVisible = false" />
+      <UButton label="Закрыть" icon="close" variant="primary" @click="dialogVisible = false" />
     </template>
   </UDialog>
 </template>
@@ -99,11 +101,18 @@ watch(() => props.modelValue, (newVal) => {
   :deep(.u-dialog-card) {
     min-height: 400px;
     max-height: 85vh;
+    background: linear-gradient(145deg, #1a100a, #2a1c14) !important;
   }
 
   :deep(.u-dialog-body) {
     max-height: 60vh;
     overflow-y: auto;
+  }
+}
+
+body.body--light .preview-dialog {
+  :deep(.u-dialog-card) {
+    background: linear-gradient(145deg, #e8dcd5, #f5f0ed) !important;
   }
 }
 
@@ -135,6 +144,10 @@ watch(() => props.modelValue, (newVal) => {
   }
 }
 
+.note-text {
+  color: $text-primary;
+}
+
 .empty-state {
   opacity: 0.6;
   font-style: italic;
@@ -143,11 +156,21 @@ watch(() => props.modelValue, (newVal) => {
   text-align: center;
 }
 
-body.body--light .note-item {
-  background: $bg-card-light;
+body.body--light {
+  .note-item {
+    background: $bg-card-light;
 
-  &:hover {
-    background: $bg-card-hover-light;
+    &:hover {
+      background: $bg-card-hover-light;
+    }
+  }
+
+  .note-text {
+    color: $text-primary-light;
+  }
+
+  .empty-state {
+    color: $text-muted-light;
   }
 }
 </style>

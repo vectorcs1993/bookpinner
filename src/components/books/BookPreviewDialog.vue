@@ -1,38 +1,40 @@
 <template>
-  <UDialog v-model="dialogVisible" :title="book?.title" :persistent="false" dialog-class="preview-dialog">
+  <UDialog v-model="dialogVisible" :title="book?.title" :persistent="false" dialog-class="preview-dialog" :dark="$q.dark.isActive">
     <div v-if="book" class="preview-content">
       <div class="row q-col-gutter-lg">
         <div class="col-12 col-sm-5 col-md-4">
-          <q-img :src="book.coverUrl || defaultCover" :ratio="5 / 7" fit="cover" class="rounded-borders antique-img" />
+          <q-img :src="book.coverUrl || defaultCover" :ratio="5 / 7" fit="cover" class="rounded-borders" />
         </div>
 
         <div class="col-12 col-sm-7 col-md-8">
-          <div class="text-h6 q-mb-md">
+          <div class="text-h6 q-mb-md" :class="$q.dark.isActive ? 'text-white' : 'text-dark'">
             <strong>Автор:</strong> {{ book.author }}
           </div>
 
-          <q-separator class="q-mb-md" />
+          <q-separator class="q-mb-md" :dark="$q.dark.isActive" />
 
           <div class="notes-section">
             <div class="row items-center q-mb-sm">
-              <div class="text-subtitle1" style="font-weight: 300;">📝 Заметки</div>
+              <div class="text-subtitle1" style="font-weight: 300;" :class="$q.dark.isActive ? 'text-white' : 'text-dark'">
+                📝 Заметки
+              </div>
               <q-space />
-              <UButton icon="add" variant="primary" shape="round" size="sm" @click="addNote" />
+              <UButton icon="add" color="primary" round size="sm" @click="addNote" />
             </div>
 
-            <UInput v-model="newNoteText" label="Текст заметки" dense class="q-mb-md" @keyup.enter="addNote" />
+            <UInput v-model="newNoteText" label="Текст заметки" dense class="q-mb-md" :dark="$q.dark.isActive" @keyup.enter="addNote" />
 
-            <div v-if="book.notes.length === 0" class="empty-state text-center">
+            <div v-if="!book.notes || book.notes.length === 0" class="empty-state text-center">
               Нет заметок для этой книги
             </div>
 
             <div v-for="(note, index) in book.notes" :key="index" class="note-item row items-center">
-              <div class="col text-white">
+              <div class="col note-text">
                 <q-icon name="bookmark" color="primary" size="16px" class="q-mr-sm" />
                 {{ note }}
               </div>
               <div>
-                <UButton icon="delete" variant="ghost" shape="round" size="sm" color="negative" @click="deleteNote(index)" />
+                <UButton icon="delete" flat round size="sm" color="negative" @click="deleteNote(index)" />
               </div>
             </div>
           </div>
@@ -41,14 +43,17 @@
     </div>
 
     <template #actions>
-      <UButton label="Закрыть" icon="close" variant="primary" @click="dialogVisible = false" />
+      <UButton label="Закрыть" icon="close" color="primary" rounded @click="dialogVisible = false" />
     </template>
   </UDialog>
 </template>
 
 <script setup>
 import { ref, computed, watch } from 'vue'
+import { useQuasar } from 'quasar'
 import { UDialog, UButton, UInput } from 'src/components/ui'
+
+const $q = useQuasar()
 
 const props = defineProps({
   modelValue: {
@@ -139,6 +144,10 @@ body.body--light .preview-dialog {
   }
 }
 
+.note-text {
+  color: $text-primary;
+}
+
 .empty-state {
   opacity: 0.6;
   font-style: italic;
@@ -147,11 +156,21 @@ body.body--light .preview-dialog {
   text-align: center;
 }
 
-body.body--light .note-item {
-  background: $bg-card-light;
+body.body--light {
+  .note-item {
+    background: $bg-card-light;
 
-  &:hover {
-    background: $bg-card-hover-light;
+    &:hover {
+      background: $bg-card-hover-light;
+    }
+  }
+
+  .note-text {
+    color: $text-primary-light;
+  }
+
+  .empty-state {
+    color: $text-muted-light;
   }
 }
 </style>

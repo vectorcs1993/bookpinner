@@ -6,7 +6,7 @@
           <q-card class="stat-card">
             <q-card-section class="stat-content">
               <q-icon name="menu_book" size="32px" color="primary" />
-              <div class="stat-value">{{ booksStore.getBooksCount }}</div>
+              <div class="stat-value">{{ booksStore.getBooksCount || 0 }}</div>
               <div class="stat-label">Всего книг</div>
             </q-card-section>
           </q-card>
@@ -16,7 +16,7 @@
           <q-card class="stat-card">
             <q-card-section class="stat-content">
               <q-icon name="description" size="32px" color="primary" />
-              <div class="stat-value">{{ booksStore.getTotalNotesCount }}</div>
+              <div class="stat-value">{{ booksStore.getTotalNotesCount || 0 }}</div>
               <div class="stat-label">Всего заметок</div>
             </q-card-section>
           </q-card>
@@ -26,7 +26,7 @@
           <q-card class="stat-card">
             <q-card-section class="stat-content">
               <q-icon name="bookmark" size="32px" color="primary" />
-              <div class="stat-value">{{ booksStore.getBooksWithNotesCount }}</div>
+              <div class="stat-value">{{ booksStore.getBooksWithNotesCount || 0 }}</div>
               <div class="stat-label">Книг с заметками</div>
             </q-card-section>
           </q-card>
@@ -36,7 +36,7 @@
           <q-card class="stat-card">
             <q-card-section class="stat-content">
               <q-icon name="trending_up" size="32px" color="primary" />
-              <div class="stat-value">{{ readingProgress }}%</div>
+              <div class="stat-value">{{ readingProgress || 0 }}%</div>
               <div class="stat-label">Прогресс чтения</div>
             </q-card-section>
           </q-card>
@@ -60,7 +60,7 @@
 
     <div class="filters-panel">
       <div class="text-subtitle1 q-mb-sm">🏆 Топ книг по заметкам</div>
-      <div v-if="topBooks.length === 0" class="empty-state text-center">
+      <div v-if="!topBooks || topBooks.length === 0" class="empty-state text-center">
         Нет книг с заметками
       </div>
       <div v-else class="top-books-list">
@@ -74,7 +74,7 @@
             <div class="text-caption" style="opacity: 0.6">{{ book.author }}</div>
           </div>
           <div class="col-auto">
-            <UBadge :label="book.notes.length" color="orange" :dark="$q.dark.isActive" />
+            <UBadge :label="book.notes?.length || 0" color="orange" />
           </div>
         </div>
       </div>
@@ -84,26 +84,25 @@
 
 <script setup>
 import { computed } from 'vue'
-import { useQuasar } from 'quasar'
 import { useBooksStore } from 'src/stores/books-store'
 import { UBadge } from 'src/components/ui'
 
-const $q = useQuasar()
 const booksStore = useBooksStore()
 
 const defaultCover = 'https://via.placeholder.com/60x84/8C3800/FFFFFF?text=Нет+обложки'
 
 const readingProgress = computed(() => {
-  const total = booksStore.getBooksCount
+  const total = booksStore.getBooksCount || 0
   if (total === 0) return 0
-  const withNotes = booksStore.getBooksWithNotesCount
+  const withNotes = booksStore.getBooksWithNotesCount || 0
   return Math.round((withNotes / total) * 100)
 })
 
 const topBooks = computed(() => {
-  return [...booksStore.getBooks]
-    .filter(book => book.notes.length > 0)
-    .sort((a, b) => b.notes.length - a.notes.length)
+  const books = booksStore.getBooks || []
+  return [...books]
+    .filter(book => book?.notes?.length > 0)
+    .sort((a, b) => (b?.notes?.length || 0) - (a?.notes?.length || 0))
     .slice(0, 5)
 })
 

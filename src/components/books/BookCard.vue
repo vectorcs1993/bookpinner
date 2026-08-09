@@ -5,7 +5,7 @@
         <div class="book-overlay">
           <div class="book-title">{{ book.title }}</div>
           <div class="book-author">{{ book.author }}</div>
-          <UBadge v-if="book.notes.length > 0" :label="book.notes.length" variant="glow" class="book-notes-badge" />
+          <UBadge v-if="book.notes.length > 0" :label="book.notes.length" color="orange" class="book-notes-badge" />
         </div>
       </div>
     </div>

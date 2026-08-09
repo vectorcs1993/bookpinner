@@ -12,46 +12,43 @@
         </div>
 
         <div class="col-12 col-md-3">
-          <USelect v-model="filters.author" :options="authorOptions" label="Автор" dense clearable emit-value map-options :dark="$q.dark.isActive" />
+          <USelect v-model="filters.author" :options="authorOptions" label="Автор" rounded dense clearable emit-value map-options
+            :dark="$q.dark.isActive" />
         </div>
 
         <div class="col-12 col-md-3">
-          <USelect v-model="filters.notes" :options="notesOptions" label="Заметки" dense clearable emit-value map-options :dark="$q.dark.isActive" />
+          <USelect v-model="filters.notes" :options="notesOptions" label="Заметки" rounded dense clearable emit-value map-options
+            :dark="$q.dark.isActive" />
         </div>
 
         <div class="col-12 col-md-2">
-          <USelect v-model="filters.sort" :options="sortOptions" placeholder="Сортировка" dense emit-value map-options :dark="$q.dark.isActive" />
+          <USelect v-model="filters.sort" :options="sortOptions" label="Сортировка" rounded dense emit-value map-options :dark="$q.dark.isActive" />
         </div>
       </div>
 
       <div class="row items-center q-mt-sm q-gutter-xs">
-        <UButton v-if="hasActiveFilters" label="Сбросить" icon="clear" variant="flat" size="sm" :dark="$q.dark.isActive" @click="resetFilters" />
+        <UButton v-if="hasActiveFilters" label="Сбросить" icon="clear" color="primary" size="sm" rounded @click="resetFilters" />
         <UChip v-for="(filter, key) in activeFilters" :key="key" :label="`${filter.label}: ${filter.value}`" icon="search" removable color="primary"
-          text-color="white" size="sm" :dark="$q.dark.isActive" @remove="removeFilter(key)" />
+          text-color="white" :dark="$q.dark.isActive" @remove="removeFilter(key)" />
       </div>
     </div>
 
     <div class="filters-panel q-mb-md">
       <div class="row q-col-gutter-sm">
-        <div class="col-12 col-md-4">
-          <UButton label="Добавить книгу" icon="add" variant="primary" :dark="$q.dark.isActive" @click="showAddDialog = true" />
-        </div>
-        <div class="col-12 col-md-8">
-          <div class="row q-gutter-sm justify-end">
-            <UChip color="primary" text-color="white" :dark="$q.dark.isActive">
-              <q-icon name="menu_book" size="18px" class="q-mr-xs" />
-              Всего: <strong class="q-ml-xs">{{ booksStore.getBooksCount }}</strong>
-            </UChip>
-            <UChip color="primary" text-color="white" :dark="$q.dark.isActive">
-              <q-icon name="search" size="18px" class="q-mr-xs" />
-              Найдено: <strong class="q-ml-xs">{{ filteredBooks.length }}</strong>
-            </UChip>
-            <UChip color="primary" text-color="white" :dark="$q.dark.isActive">
-              <q-icon name="description" size="18px" class="q-mr-xs" />
-              С заметками: <strong class="q-ml-xs">{{ booksStore.getBooksWithNotesCount }}</strong>
-            </UChip>
-          </div>
-        </div>
+        <UChip color="primary" text-color="white" :dark="$q.dark.isActive">
+          <q-icon name="menu_book" size="18px" class="q-mr-xs" />
+          Всего: <strong class="q-ml-xs">{{ booksStore.getBooksCount }}</strong>
+        </UChip>
+        <UChip color="primary" text-color="white" :dark="$q.dark.isActive">
+          <q-icon name="search" size="18px" class="q-mr-xs" />
+          Найдено: <strong class="q-ml-xs">{{ filteredBooks.length }}</strong>
+        </UChip>
+        <UChip color="primary" text-color="white" :dark="$q.dark.isActive">
+          <q-icon name="description" size="18px" class="q-mr-xs" />
+          С заметками: <strong class="q-ml-xs">{{ booksStore.getBooksWithNotesCount }}</strong>
+        </UChip>
+        <q-space />
+        <UButton label="Добавить книгу" icon="add" color="primary" rounded @click="showAddDialog = true" />
       </div>
     </div>
 
@@ -69,7 +66,7 @@
 
     <BookShelf v-else :books="filteredBooks" @book-click="openPreview" />
 
-    <UDialog v-model="showAddDialog" title="📖 Добавить книгу" :dark="$q.dark.isActive">
+    <UDialog v-model="showAddDialog" title="Добавить книгу" :dark="$q.dark.isActive">
       <div class="add-book-form">
         <UInput v-model="newBook.title" label="Название *" dense class="q-mb-md" :dark="$q.dark.isActive" />
         <UInput v-model="newBook.author" label="Автор *" dense class="q-mb-md" :dark="$q.dark.isActive" />
@@ -82,9 +79,8 @@
       </div>
 
       <template #actions>
-        <UButton label="Отмена" icon="close" variant="ghost" :dark="$q.dark.isActive" @click="showAddDialog = false" />
-        <UButton label="Добавить книгу" icon="add" variant="primary" :dark="$q.dark.isActive" :disabled="!newBook.title || !newBook.author"
-          @click="addBook" />
+        <UButton label="Отмена" icon="close" rounded color="primary" @click="showAddDialog = false" />
+        <UButton label="Добавить книгу" icon="add" rounded color="primary" :disabled="!newBook.title || !newBook.author" @click="addBook" />
       </template>
     </UDialog>
 
