@@ -1,4 +1,4 @@
-// Глобальные стили приложения
+// app.scss
 @import './quasar.variables.scss';
 
 * {
@@ -10,14 +10,32 @@ body {
   min-height: 100vh;
 }
 
-// Quasar автоматически добавляет классы .body--dark и .body--light
-// Мы используем их для фона страницы
+// Темная тема
 body.body--dark {
   background: linear-gradient(180deg, $bg-dark-start 0%, $bg-dark-end 100%) fixed !important;
+  color: $text-primary !important;
+
+  // Стили для тултипа в темной теме
+  .q-tooltip {
+    background: #1a1a1a !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
+  }
 }
 
+// Светлая тема
 body.body--light {
   background: linear-gradient(180deg, $bg-light-start 0%, $bg-light-end 100%) fixed !important;
+  color: $text-primary-light !important;
+
+  // Стили для тултипа в светлой теме
+  .q-tooltip {
+    background: #ffffff !important;
+    color: #1a1410 !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12) !important;
+  }
 }
 
 // Scrollbar

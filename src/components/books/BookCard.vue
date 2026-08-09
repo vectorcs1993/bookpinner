@@ -5,24 +5,24 @@
         <div class="book-overlay">
           <div class="book-title">{{ book.title }}</div>
           <div class="book-author">{{ book.author }}</div>
-          <UBadge v-if="book.notes.length > 0" :label="book.notes.length" variant="glow" class="book-notes-badge" :dark="$q.dark.isActive" />
+          <UBadge v-if="book.notes.length > 0" :label="book.notes.length" variant="glow" class="book-notes-badge" />
         </div>
       </div>
     </div>
 
-    <q-tooltip v-if="book.notes.length > 0" anchor="top middle" self="bottom middle" :offset="[0, 10]">
+    <UTooltip v-if="book.notes.length > 0" anchor="top middle" self="bottom middle" :offset="[0, 10]">
       <div class="text-weight-medium q-mb-sm">📝 Заметки ({{ book.notes.length }})</div>
       <div v-for="(note, idx) in book.notes" :key="idx" class="note-tooltip-item">
         <q-icon name="bookmark" :color="$q.dark.isActive ? 'orange' : 'primary'" size="12px" class="q-mr-xs" />
         {{ note }}
       </div>
-    </q-tooltip>
+    </UTooltip>
   </div>
 </template>
 
 <script setup>
 import { useQuasar } from 'quasar'
-import { UBadge } from 'src/components/ui'
+import { UBadge, UTooltip } from 'src/components/ui'
 
 const props = defineProps({
   book: {
@@ -147,7 +147,6 @@ const handleClick = () => {
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
   align-items: flex-start;
-  color: rgba(255, 255, 255, 0.7);
 
   &:last-child {
     border-bottom: none;
