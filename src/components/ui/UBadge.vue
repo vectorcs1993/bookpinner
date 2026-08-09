@@ -1,5 +1,5 @@
 <template>
-  <q-badge :label="label" :color="color" :text-color="textColor" :floating="floating" :transparent="transparent" :multi-line="multiLine"
+  <q-badge :label="label" :color="color" :text-color="textColor" :floating="floating" :transparent="transparent" :multi-line="multiLine" :dark="dark"
     :class="['u-badge', badgeClass]" v-bind="$attrs">
     <slot />
   </q-badge>
@@ -18,6 +18,7 @@ const props = defineProps({
   floating: { type: Boolean, default: false },
   transparent: { type: Boolean, default: false },
   multiLine: { type: Boolean, default: false },
+  dark: { type: Boolean, default: null },
 })
 
 const badgeClass = {

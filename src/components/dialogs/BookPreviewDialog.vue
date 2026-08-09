@@ -1,60 +1,57 @@
 <template>
-  <q-dialog v-model="dialogVisible" class="preview-dialog">
-    <q-card v-if="book" class="antique-card">
-      <q-card-section class="row items-center q-pb-none">
-        <div class="text-h5 text-white" style="font-weight: 300;">{{ book.title }}</div>
-        <q-space />
-        <UButton icon="close" variant="ghost" shape="round" size="sm" @click="dialogVisible = false" />
-      </q-card-section>
-
-      <q-card-section class="row q-col-gutter-lg">
+  <UDialog v-model="dialogVisible" :title="book?.title" :persistent="false" dialog-class="preview-dialog" :dark="$q.dark.isActive">
+    <div v-if="book" class="preview-content">
+      <div class="row q-col-gutter-lg">
         <div class="col-12 col-sm-5 col-md-4">
-          <q-img :src="book.coverUrl || defaultCover" :ratio="5 / 7" fit="cover" class="rounded-borders antique-img" />
+          <q-img :src="book.coverUrl || defaultCover" :ratio="5 / 7" fit="cover" class="rounded-borders" />
         </div>
 
         <div class="col-12 col-sm-7 col-md-8">
-          <div class="text-h6 text-white q-mb-md">
+          <div class="text-h6 q-mb-md">
             <strong>Автор:</strong> {{ book.author }}
           </div>
 
-          <q-separator :style="{ backgroundColor: 'rgba(196, 81, 0, 0.4)' }" class="q-mb-md" />
+          <q-separator class="q-mb-md" :dark="$q.dark.isActive" />
 
           <div class="notes-section">
             <div class="row items-center q-mb-sm">
-              <div class="text-subtitle1 text-white" style="font-weight: 300;">📝 Заметки</div>
+              <div class="text-subtitle1" style="font-weight: 300;">📝 Заметки</div>
               <q-space />
-              <UButton icon="add" variant="primary" shape="round" size="sm" @click="addNote" />
+              <UButton icon="add" variant="primary" shape="round" size="sm" :dark="$q.dark.isActive" @click="addNote" />
             </div>
 
-            <q-input v-model="newNoteText" label="Текст заметки" outlined dense dark class="q-mb-md modern-input" @keyup.enter="addNote" />
+            <UInput v-model="newNoteText" label="Текст заметки" dense class="q-mb-md" :dark="$q.dark.isActive" @keyup.enter="addNote" />
 
             <div v-if="book.notes.length === 0" class="empty-state text-center">
               Нет заметок для этой книги
             </div>
 
             <div v-for="(note, index) in book.notes" :key="index" class="note-item row items-center">
-              <div class="col text-white">
+              <div class="col">
                 <q-icon name="bookmark" color="primary" size="16px" class="q-mr-sm" />
                 {{ note }}
               </div>
               <div>
-                <UButton icon="delete" variant="ghost" size="sm" shape="round" color="negative" @click="deleteNote(index)" />
+                <UButton icon="delete" variant="ghost" shape="round" size="sm" color="negative" :dark="$q.dark.isActive" @click="deleteNote(index)" />
               </div>
             </div>
           </div>
         </div>
-      </q-card-section>
+      </div>
+    </div>
 
-      <q-card-actions align="right" class="q-pa-md">
-        <UButton label="Закрыть" icon="close" variant="primary" shape="round" size="md" @click="dialogVisible = false" />
-      </q-card-actions>
-    </q-card>
-  </q-dialog>
+    <template #actions>
+      <UButton label="Закрыть" icon="close" variant="primary" :dark="$q.dark.isActive" @click="dialogVisible = false" />
+    </template>
+  </UDialog>
 </template>
 
 <script setup>
 import { ref, computed, watch } from 'vue'
-import { UButton } from 'src/components/ui'
+import { useQuasar } from 'quasar'
+import { UDialog, UButton, UInput } from 'src/components/ui'
+
+const $q = useQuasar()
 
 const props = defineProps({
   modelValue: {
@@ -99,28 +96,15 @@ watch(() => props.modelValue, (newVal) => {
 @import 'src/css/quasar.variables.scss';
 
 .preview-dialog {
-  :deep(.q-dialog__inner) {
-    min-width: 600px;
-    max-width: 90vw;
-
-    @media (max-width: 768px) {
-      min-width: 90vw;
-    }
-  }
-
-  :deep(.q-card) {
+  :deep(.u-dialog-card) {
     min-height: 400px;
     max-height: 85vh;
   }
-}
 
-.antique-card {
-  border-radius: $radius-lg !important;
-  background: linear-gradient(145deg, #1a100a, #2a1c14) !important;
-}
-
-body.body--light .antique-card {
-  background: linear-gradient(145deg, #e8dcd5, #f5f0ed) !important;
+  :deep(.u-dialog-body) {
+    max-height: 60vh;
+    overflow-y: auto;
+  }
 }
 
 .notes-section {
@@ -164,14 +148,6 @@ body.body--light .note-item {
 
   &:hover {
     background: $bg-card-hover-light;
-  }
-}
-
-@media (max-width: 768px) {
-  .preview-dialog {
-    :deep(.q-dialog__inner) {
-      min-width: 90vw;
-    }
   }
 }
 </style>

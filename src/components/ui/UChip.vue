@@ -1,7 +1,7 @@
 <template>
-  <q-chip :label="label" :icon="icon" :color="color || 'primary'" :text-color="textColor || 'white'" :size="size" :dense="dense"
-    :removable="removable" :clickable="clickable" :disable="disable" :class="['u-chip', chipClass]" @update:model-value="handleRemove"
-    @click="handleClick" v-bind="$attrs">
+  <q-chip :label="label" :icon="icon" :color="color || 'primary'" :text-color="textColor" :size="size" :dense="dense" :removable="removable"
+    :clickable="clickable" :disable="disable" :dark="dark" :class="['u-chip', chipClass]" @update:model-value="handleRemove" @click="handleClick"
+    v-bind="$attrs">
     <template v-if="$slots.default" #default>
       <slot />
     </template>
@@ -27,6 +27,7 @@ const props = defineProps({
   removable: { type: Boolean, default: false },
   clickable: { type: Boolean, default: false },
   disable: { type: Boolean, default: false },
+  dark: { type: Boolean, default: null },
 })
 
 const emit = defineEmits(['remove', 'click'])

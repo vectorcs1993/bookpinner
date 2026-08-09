@@ -5,7 +5,7 @@
         <div class="book-overlay">
           <div class="book-title">{{ book.title }}</div>
           <div class="book-author">{{ book.author }}</div>
-          <UBadge v-if="book.notes.length > 0" :label="book.notes.length" icon="description" variant="glow" class="book-notes-badge" />
+          <UBadge v-if="book.notes.length > 0" :label="book.notes.length" variant="glow" class="book-notes-badge" :dark="$q.dark.isActive" />
         </div>
       </div>
     </div>
@@ -154,7 +154,7 @@ const handleClick = () => {
   }
 }
 
-// Светлая тема
+// Светлая тема через body класс
 body.body--light {
   .book {
     background-color: #f0e8e0;

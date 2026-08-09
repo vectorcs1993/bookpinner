@@ -1,7 +1,7 @@
 <template>
   <div class="bookshelf-wrapper">
     <div v-if="loading" class="text-center q-py-lg">
-      <USpinner size="3em" text="Загрузка каталога..." />
+      <USpinner size="3em" text="Загрузка каталога..." :dark="$q.dark.isActive" />
     </div>
 
     <div v-else class="shelves-container">
@@ -27,8 +27,11 @@
 
 <script setup>
 import { ref, computed, onMounted, onBeforeUnmount, nextTick } from 'vue'
+import { useQuasar } from 'quasar'
 import BookCard from './BookCard.vue'
 import { USpinner } from 'src/components/ui'
+
+const $q = useQuasar()
 
 const props = defineProps({
   books: {

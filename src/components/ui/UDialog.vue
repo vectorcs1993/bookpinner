@@ -1,6 +1,6 @@
 <template>
   <q-dialog v-model="localValue" :persistent="persistent" :maximized="maximized" :full-width="fullWidth" :full-height="fullHeight"
-    :position="position" :class="['u-dialog', dialogClass]" @update:model-value="handleUpdate" v-bind="$attrs">
+    :position="position" :dark="dark" :class="['u-dialog', dialogClass]" @update:model-value="handleUpdate" v-bind="$attrs">
     <q-card class="u-dialog-card">
       <q-card-section v-if="title || $slots.title" class="u-dialog-header">
         <div class="row items-center">
@@ -8,11 +8,11 @@
             <slot name="title">{{ title }}</slot>
           </div>
           <q-space />
-          <UButton v-if="!persistent" icon="close" variant="ghost" shape="round" size="sm" @click="close" />
+          <UButton v-if="!persistent" icon="close" variant="ghost" shape="round" size="sm" :dark="dark" @click="close" />
         </div>
       </q-card-section>
 
-      <q-separator v-if="title || $slots.title" />
+      <q-separator v-if="title || $slots.title" :dark="dark" />
 
       <q-card-section class="u-dialog-body">
         <slot />
@@ -21,7 +21,7 @@
       <q-card-actions v-if="$slots.actions || actions" align="right" class="u-dialog-actions">
         <slot name="actions">
           <UButton v-for="action in actions" :key="action.label" :label="action.label" :variant="action.variant || 'secondary'" shape="round"
-            :loading="action.loading" @click="action.handler" />
+            :loading="action.loading" :dark="dark" @click="action.handler" />
         </slot>
       </q-card-actions>
     </q-card>
@@ -46,6 +46,7 @@ const props = defineProps({
   title: { type: String, default: '' },
   dialogClass: { type: String, default: '' },
   actions: { type: Array, default: () => [] },
+  dark: { type: Boolean, default: null },
 })
 
 const emit = defineEmits(['update:modelValue', 'close'])

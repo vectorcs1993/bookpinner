@@ -1,6 +1,6 @@
 <template>
   <div class="u-spinner-wrapper" :class="{ 'u-spinner-overlay': overlay }">
-    <q-spinner :color="props.color" :size="size" v-bind="$attrs" />
+    <q-spinner :color="props.color" :size="size" :dark="dark" v-bind="$attrs" />
     <span v-if="text" class="u-spinner-text">{{ text }}</span>
   </div>
 </template>
@@ -11,6 +11,7 @@ const props = defineProps({
   size: { type: String, default: '3em' },
   text: { type: String, default: '' },
   overlay: { type: Boolean, default: false },
+  dark: { type: Boolean, default: null },
   variant: {
     type: String,
     default: 'default',

@@ -3,7 +3,7 @@
     <div class="row items-center q-mb-md">
       <div class="col">
         <div class="row items-center">
-          <UButton icon="menu" variant="ghost" @click="$emit('toggleDrawer')" />
+          <UButton icon="menu" variant="ghost" :dark="$q.dark.isActive" @click="$emit('toggleDrawer')" />
           <span class="page-title q-ml-sm">Статистика</span>
         </div>
       </div>
@@ -83,7 +83,7 @@
             <div class="text-caption" style="opacity: 0.6">{{ book.author }}</div>
           </div>
           <div class="col-auto">
-            <UBadge :label="book.notes.length" color="orange" />
+            <UBadge :label="book.notes.length" color="orange" :dark="$q.dark.isActive" />
           </div>
         </div>
       </div>
@@ -93,9 +93,11 @@
 
 <script setup>
 import { computed } from 'vue'
+import { useQuasar } from 'quasar'
 import { useBooksStore } from 'src/stores/books-store'
 import { UButton, UBadge } from 'src/components/ui'
 
+const $q = useQuasar()
 const booksStore = useBooksStore()
 
 defineEmits(['toggleDrawer'])

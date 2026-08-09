@@ -3,7 +3,7 @@
     <div class="row items-center q-mb-md">
       <div class="col">
         <div class="row items-center">
-          <UButton icon="menu" variant="ghost" @click="$emit('toggleDrawer')" />
+          <UButton icon="menu" variant="ghost" :dark="$q.dark.isActive" @click="$emit('toggleDrawer')" />
           <span class="page-title q-ml-sm">Мои книжные полки</span>
         </div>
       </div>
@@ -12,25 +12,26 @@
     <div class="filters-panel q-mb-md">
       <div class="row items-center q-col-gutter-sm">
         <div class="col-12 col-md-4">
-          <UInput v-model="newShelfName" placeholder="Название новой полки..." dense clearable @keyup.enter="createShelf">
+          <UInput v-model="newShelfName" placeholder="Название новой полки..." dense clearable :dark="$q.dark.isActive" @keyup.enter="createShelf">
             <template #prepend>
               <q-icon name="shelves" color="primary" />
             </template>
           </UInput>
         </div>
         <div class="col-12 col-md-auto">
-          <UButton label="Создать полку" icon="add" variant="primary" :disabled="!newShelfName.trim()" @click="createShelf" />
+          <UButton label="Создать полку" icon="add" variant="primary" :dark="$q.dark.isActive" :disabled="!newShelfName.trim()"
+            @click="createShelf" />
         </div>
       </div>
     </div>
 
     <div class="filters-panel q-mb-md">
       <div class="row q-gutter-sm">
-        <UChip color="primary" text-color="white">
+        <UChip color="primary" text-color="white" :dark="$q.dark.isActive">
           <q-icon name="shelves" size="18px" class="q-mr-xs" />
           Всего полок: <strong class="q-ml-xs">{{ shelvesStore.getShelvesCount }}</strong>
         </UChip>
-        <UChip color="primary" text-color="white">
+        <UChip color="primary" text-color="white" :dark="$q.dark.isActive">
           <q-icon name="menu_book" size="18px" class="q-mr-xs" />
           Всего книг: <strong class="q-ml-xs">{{ totalBooksInShelves }}</strong>
         </UChip>
@@ -38,7 +39,7 @@
     </div>
 
     <div v-if="shelvesStore.loading" class="text-center q-py-lg">
-      <USpinner size="3em" text="Загрузка полок..." />
+      <USpinner size="3em" text="Загрузка полок..." :dark="$q.dark.isActive" />
     </div>
 
     <div v-else-if="shelvesStore.getShelves.length === 0" class="text-center q-py-lg">
@@ -65,7 +66,7 @@
                   </span>
                 </div>
               </div>
-              <UButton icon="delete" variant="ghost" size="sm" @click.stop="deleteShelf(shelf.id)" />
+              <UButton icon="delete" variant="ghost" size="sm" :dark="$q.dark.isActive" @click.stop="deleteShelf(shelf.id)" />
             </div>
           </q-card-section>
 
@@ -83,13 +84,13 @@
       </div>
     </div>
 
-    <UDialog v-model="shelfDialogVisible" :title="`📚 ${selectedShelf?.name || ''}`">
+    <UDialog v-model="shelfDialogVisible" :title="`📚 ${selectedShelf?.name || ''}`" :dark="$q.dark.isActive">
       <div v-if="selectedShelf" class="shelf-dialog-content">
         <div class="row items-center q-mb-md">
           <div class="col">
             <div class="text-subtitle1">Книги на полке: {{ selectedShelf.books.length }}</div>
           </div>
-          <UButton label="Добавить книгу" icon="add" variant="primary" size="sm" @click="showAddToShelf = true" />
+          <UButton label="Добавить книгу" icon="add" variant="primary" size="sm" :dark="$q.dark.isActive" @click="showAddToShelf = true" />
         </div>
 
         <div v-if="selectedShelf.books.length === 0" class="empty-state text-center">
@@ -106,26 +107,26 @@
               <div class="text-caption" style="opacity: 0.6">{{ book.author }}</div>
             </div>
             <div>
-              <UButton icon="close" variant="ghost" size="sm" @click="removeBookFromShelf(book.id)" />
+              <UButton icon="close" variant="ghost" size="sm" :dark="$q.dark.isActive" @click="removeBookFromShelf(book.id)" />
             </div>
           </div>
         </div>
       </div>
 
       <template #actions>
-        <UButton label="Закрыть" variant="secondary" @click="shelfDialogVisible = false" />
+        <UButton label="Закрыть" variant="secondary" :dark="$q.dark.isActive" @click="shelfDialogVisible = false" />
       </template>
     </UDialog>
 
-    <UDialog v-model="showAddToShelf" title="📖 Добавить книгу на полку">
+    <UDialog v-model="showAddToShelf" title="📖 Добавить книгу на полку" :dark="$q.dark.isActive">
       <div class="add-to-shelf-form">
         <USelect v-model="selectedBookForShelf" :options="availableBooksOptions" label="Выберите книгу" dense placeholder="Книга..." emit-value
-          map-options />
+          map-options :dark="$q.dark.isActive" />
       </div>
 
       <template #actions>
-        <UButton label="Отмена" variant="ghost" @click="showAddToShelf = false" />
-        <UButton label="Добавить" variant="primary" :disabled="!selectedBookForShelf" @click="addBookToShelf" />
+        <UButton label="Отмена" variant="ghost" :dark="$q.dark.isActive" @click="showAddToShelf = false" />
+        <UButton label="Добавить" variant="primary" :dark="$q.dark.isActive" :disabled="!selectedBookForShelf" @click="addBookToShelf" />
       </template>
     </UDialog>
   </div>
@@ -133,10 +134,10 @@
 
 <script setup>
 import { ref, computed } from 'vue'
+import { useQuasar } from 'quasar'
 import { useShelvesStore } from 'src/stores/shelves-store'
 import { useBooksStore } from 'src/stores/books-store'
 import { UButton, UDialog, UInput, USelect, UChip, USpinner } from 'src/components/ui'
-import { useQuasar } from 'quasar'
 
 const $q = useQuasar()
 const shelvesStore = useShelvesStore()

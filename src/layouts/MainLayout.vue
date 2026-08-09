@@ -1,6 +1,6 @@
 <template>
   <q-layout view="lHh Lpr lFf" class="main-layout">
-    <q-drawer v-model="leftDrawerOpen" side="left" bordered overlay :width="280" :breakpoint="500" :show-if-above="false"
+    <q-drawer v-model="leftDrawerOpen" side="left" bordered overlay :width="280" :breakpoint="500" :show-if-above="false" :dark="$q.dark.isActive"
       @click-outside="closeDrawer">
       <div class="drawer-header">
         <div class="drawer-logo">
@@ -9,7 +9,7 @@
             <div class="logo-subtitle">Pin your books. Track your progress!</div>
           </div>
         </div>
-        <UButton icon="close" variant="ghost" shape="round" @click="closeDrawer" />
+        <UButton icon="close" variant="ghost" shape="round" :dark="$q.dark.isActive" @click="closeDrawer" />
       </div>
 
       <q-list>
@@ -20,17 +20,17 @@
           <q-item-section>{{ item.label }}</q-item-section>
         </q-item>
 
-        <q-separator />
+        <q-separator :dark="$q.dark.isActive" />
 
-        <q-item clickable v-ripple @click="toggleTheme">
+        <q-item clickable v-ripple @click="toggleDarkMode">
           <q-item-section avatar>
-            <q-icon :name="themeIcon" color="primary" />
+            <q-icon :name="darkIcon" color="primary" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>{{ themeLabel }}</q-item-label>
+            <q-item-label>{{ darkLabel }}</q-item-label>
           </q-item-section>
           <q-item-section side>
-            <UToggle :model-value="isDark" color="primary" @update:model-value="toggleTheme" />
+            <q-toggle :model-value="$q.dark.isActive" color="primary" @update:model-value="toggleDarkMode" />
           </q-item-section>
         </q-item>
       </q-list>
@@ -44,25 +44,30 @@
 
 <script setup>
 import { ref, computed } from 'vue'
+import { useQuasar } from 'quasar'
 import { useRouter, useRoute } from 'vue-router'
-import { useThemeStore } from 'src/stores/theme-store'
-import { UButton, UToggle } from 'src/components/ui'
+import { UButton } from 'src/components/ui'
 
+const $q = useQuasar()
 const router = useRouter()
 const route = useRoute()
-const themeStore = useThemeStore()
 
 const leftDrawerOpen = ref(false)
 
-const isDark = computed(() => themeStore.isDark)
-const themeIcon = computed(() => themeStore.themeIcon)
-const themeLabel = computed(() => themeStore.themeLabel)
+const darkIcon = computed(() => $q.dark.isActive ? 'dark_mode' : 'light_mode')
+const darkLabel = computed(() => $q.dark.isActive ? 'Темная тема' : 'Светлая тема')
 
 const menuItems = [
   { label: 'Моя библиотека', icon: 'menu_book', route: '/library' },
   { label: 'Мои книжные полки', icon: 'shelves', route: '/shelves' },
   { label: 'Статистика', icon: 'trending_up', route: '/statistics' },
 ]
+
+const toggleDarkMode = () => {
+  $q.dark.toggle()
+  // Сохраняем состояние в localStorage
+  localStorage.setItem('quasar-dark', JSON.stringify($q.dark.isActive))
+}
 
 const toggleDrawer = () => {
   leftDrawerOpen.value = !leftDrawerOpen.value
@@ -80,10 +85,6 @@ const navigate = (routePath) => {
   router.push(routePath)
   closeDrawer()
 }
-
-const toggleTheme = () => {
-  themeStore.toggleTheme()
-}
 </script>
 
 <style scoped lang="scss">
@@ -98,6 +99,11 @@ const toggleTheme = () => {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  border-bottom: 1px solid $border-color;
+}
+
+body.body--light .drawer-header {
+  border-bottom-color: $border-color-light;
 }
 
 .drawer-logo {

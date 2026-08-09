@@ -10,62 +10,14 @@ body {
   min-height: 100vh;
 }
 
-// Темная тема (по умолчанию)
+// Quasar автоматически добавляет классы .body--dark и .body--light
+// Мы используем их для фона страницы
 body.body--dark {
   background: linear-gradient(180deg, $bg-dark-start 0%, $bg-dark-end 100%) fixed !important;
-  color: $text-primary !important;
 }
 
-// Светлая тема
 body.body--light {
   background: linear-gradient(180deg, $bg-light-start 0%, $bg-light-end 100%) fixed !important;
-  color: $text-primary-light !important;
-}
-
-// Стили для drawer (перенесены в MainLayout)
-.drawer-header {
-  padding: 24px 20px 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 1px solid $border-color;
-}
-
-body.body--light .drawer-header {
-  border-bottom-color: $border-color-light;
-}
-
-.drawer-logo {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.logo-text {
-  display: flex;
-  flex-direction: column;
-}
-
-.logo-title {
-  font-size: 20px;
-  font-weight: 600;
-  letter-spacing: -0.5px;
-  color: $text-primary;
-}
-
-body.body--light .logo-title {
-  color: $text-primary-light;
-}
-
-.logo-subtitle {
-  font-size: 12px;
-  font-weight: 300;
-  letter-spacing: 0.5px;
-  color: $text-muted;
-}
-
-body.body--light .logo-subtitle {
-  color: $text-muted-light;
 }
 
 // Scrollbar
