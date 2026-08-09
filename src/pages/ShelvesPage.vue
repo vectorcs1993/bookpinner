@@ -1,14 +1,5 @@
 <template>
   <div class="shelves-page q-pa-md">
-    <div class="row items-center q-mb-md">
-      <div class="col">
-        <div class="row items-center">
-          <UButton icon="menu" variant="ghost" :dark="$q.dark.isActive" @click="$emit('toggleDrawer')" />
-          <span class="page-title q-ml-sm">Мои книжные полки</span>
-        </div>
-      </div>
-    </div>
-
     <div class="filters-panel q-mb-md">
       <div class="row items-center q-col-gutter-sm">
         <div class="col-12 col-md-4">
@@ -142,8 +133,6 @@ import { UButton, UDialog, UInput, USelect, UChip, USpinner } from 'src/componen
 const $q = useQuasar()
 const shelvesStore = useShelvesStore()
 const booksStore = useBooksStore()
-
-defineEmits(['toggleDrawer'])
 
 const newShelfName = ref('')
 const shelfDialogVisible = ref(false)

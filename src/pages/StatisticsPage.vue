@@ -1,14 +1,5 @@
 <template>
   <div class="statistics-page q-pa-md">
-    <div class="row items-center q-mb-md">
-      <div class="col">
-        <div class="row items-center">
-          <UButton icon="menu" variant="ghost" :dark="$q.dark.isActive" @click="$emit('toggleDrawer')" />
-          <span class="page-title q-ml-sm">Статистика</span>
-        </div>
-      </div>
-    </div>
-
     <div class="stats-grid q-mb-md">
       <div class="stats-row row q-col-gutter-sm">
         <div class="col-12 col-sm-6 col-md-3">
@@ -95,12 +86,10 @@
 import { computed } from 'vue'
 import { useQuasar } from 'quasar'
 import { useBooksStore } from 'src/stores/books-store'
-import { UButton, UBadge } from 'src/components/ui'
+import { UBadge } from 'src/components/ui'
 
 const $q = useQuasar()
 const booksStore = useBooksStore()
-
-defineEmits(['toggleDrawer'])
 
 const defaultCover = 'https://via.placeholder.com/60x84/8C3800/FFFFFF?text=Нет+обложки'
 

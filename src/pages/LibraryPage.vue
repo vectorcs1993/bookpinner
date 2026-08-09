@@ -1,14 +1,5 @@
 <template>
   <div class="library-page q-pa-md">
-    <div class="row items-center q-mb-md">
-      <div class="col">
-        <div class="row items-center">
-          <UButton icon="menu" variant="ghost" :dark="$q.dark.isActive" @click="$emit('toggleDrawer')" />
-          <span class="page-title q-ml-sm">Моя библиотека</span>
-        </div>
-      </div>
-    </div>
-
     <div class="filters-panel q-mb-md">
       <div class="row q-col-gutter-sm">
         <div class="col-12 col-md-4">
@@ -111,8 +102,6 @@ import { UButton, UChip, UDialog, UInput, USelect, USpinner } from 'src/componen
 
 const $q = useQuasar()
 const booksStore = useBooksStore()
-
-defineEmits(['toggleDrawer'])
 
 const showAddDialog = ref(false)
 const previewDialog = ref(false)
