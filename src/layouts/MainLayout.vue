@@ -82,6 +82,7 @@ const leftDrawerOpen = ref(false)
 const menuItems = [
   { label: 'Моя библиотека', icon: 'menu_book', route: '/library' },
   { label: 'Мои книжные полки', icon: 'shelves', route: '/shelves' },
+  { label: 'Трекер чтения', icon: 'view_column', route: '/tracker' },
   { label: 'Статистика', icon: 'trending_up', route: '/statistics' },
 ]
 

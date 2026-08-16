@@ -17,6 +17,10 @@ const routes = [
         path: 'statistics',
         component: () => import('src/pages/StatisticsPage.vue'),
       },
+      {
+        path: 'tracker',
+        component: () => import('src/pages/TrackerPage.vue'),
+      },
     ],
   },
 ]
